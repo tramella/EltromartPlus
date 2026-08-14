@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Brands;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,5 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+        //
+        view()->composer('layouts.app', function ($view) {
+            $brand = Brands::take(4)->get();
+            $view->with('brands', $brand);
+        });
+        // Paginator::useTailwind();
     }
 }

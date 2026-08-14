@@ -158,6 +158,12 @@
                 View All Deals <i class="fa-solid fa-arrow-right ml-1"></i>
             </a>
         </div>
+    </div>
+    @endforeach
+
+
+    </div>
+    </div>
 
         <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($flashProducts as $prod)

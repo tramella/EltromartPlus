@@ -19,15 +19,29 @@ return new class extends Migration
             $table->unsignedBigInteger("color_id");
             $table->string('product_img');
             $table->decimal('regular_price');
-            $table->decimal('sale_price');
+            $table->decimal('sale_price')->nullable();
             $table->integer('quantity');
-            $table->string('materials');
-            $table->string('type');
-            $table->string('storage');
-            $table->string('RAM');
-            $table->integer('quantity_sold');
-            $table->string('status');
-            $table->text('descriptions');
+            $table->string('materials')->nullable();
+            $table->string('type')->nullable();
+            $table->string('storage')->nullable();
+            $table->string('RAM')->nullable();
+            $table->integer('quantity_sold')->nullable();
+            $table->string('status')->default('active');
+            $table->text('descriptions')->nullable();
+            $table->string('refresh_rate')->nullable();
+            $table->string('screen_size')->nullable();
+            $table->string('port')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('screen_resolution')->nullable();
+            $table->string('graphics_card')->nullable();
+            $table->string('CPU')->nullable();
+            $table->string('Wired')->nullable();
+            $table->string('Wiredless')->nullable();
+            $table->string('Gaming')->nullable();
+            $table->string('DPI')->nullable();
+            $table->string('Silent')->nullable();
+            $table->string('length')->nullable();
+            $table->string('featured')->nullable();
             $table->timestamps();
             // Tạo khóa ngoại
             $table->foreign('cate_id')

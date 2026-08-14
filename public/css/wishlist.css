@@ -1,0 +1,47 @@
+.w-wishlist{
+    width: 80%;
+}
+.title-wishlist{
+    font-size: 32px;
+    font-weight: 700;
+    padding: 20px;
+}
+
+.pro_namew{
+    font-size: 18px;
+    font-weight: 600;
+}
+.item-wishlist
+{
+    /* border-top: 1px solid #A1A1A1; */
+    /* border-left: 1px solid #A1A1A1; */
+    padding: 50px 30px;
+}
+
+.pro_pricew{
+    font-size: 16px;
+    font-weight: 700px;
+}
+
+
+.img-wishlist{
+    width: 150px;
+    height: 100px;
+    object-fit: contain;
+}
+.item-center{
+   text-align: center;
+}
+.thead-css{
+    border-bottom: 1px solid #A1A1A1;
+    font-size: 16px;
+    font-family: "Raleway";
+    /* padding: 20px 0px; */
+    /* margin-bottom: 10px; */
+}
+.trbody-css{
+    /* border-left: 1px solid #A1A1A1; */
+    /* border-right: 1px solid #A1A1A1; */
+    border-bottom: 1px solid #A1A1A1;
+    /* border-left: 1px solid #A1A1A1; */
+}

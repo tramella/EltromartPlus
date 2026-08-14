@@ -134,7 +134,24 @@
                                     </form>
                                 </div>
                             </div>
+                        @endauth --}}
+                        @auth
+                            @if (Auth::user()->utype === 'ADM')
+                                <a href="{{ route('admin.index') }}" class="icon_header flex justify-between items-center">
+                                @else
+                                    <a href="{{ route('user.index') }}"
+                                        class="icon_header flex justify-between items-center">
+                            @endif
+
+                            {{-- Hiển thị Avatar nếu có, nếu không thì dùng ảnh mặc định --}}
+                            <img src="{{ Auth::user()->avatar ? asset('images/' . Auth::user()->avatar) : asset('images/default-avatar.png') }}"
+                                class="icon_header_signin rounded-full" width="40" />
+
+                            {{-- Hiển thị Username --}}
+                            <span class="font-semibold">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
+                            </a>
                         @endauth
+
                         @guest
                             <a href="{{ route('login') }}" class="btn-modern-primary text-xs py-2 px-4">
                                 <i class="fa-solid fa-user mr-1.5 text-xs"></i> Sign In
@@ -287,3 +304,75 @@
     </footer>
 </body>
 </html>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdownButton = document.getElementById("dropdownButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const dropdownContainer = document.getElementById("dropdownContainer");
+
+        function showDropdown() {
+            dropdownMenu.classList.remove("opacity-0", "invisible");
+            dropdownMenu.classList.add("opacity-100", "visible");
+            dropdownButton.classList.add("dropdown-header");
+        }
+
+        function hideDropdown(event) {
+            // Kiểm tra nếu chuột vẫn trong container thì không ẩn dropdown
+            if (dropdownContainer.contains(event.relatedTarget)) {
+                return;
+            }
+            dropdownMenu.classList.add("opacity-0", "invisible");
+            dropdownMenu.classList.remove("opacity-100", "visible");
+            dropdownButton.classList.remove("dropdown-header");
+        }
+
+        // Khi chuột vào container (bao gồm cả button & menu) => Hiện dropdown
+        dropdownContainer.addEventListener("mouseenter", showDropdown);
+
+        // Khi chuột rời khỏi container => Ẩn dropdown
+        dropdownContainer.addEventListener("mouseleave", hideDropdown);
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdownButton1 = document.getElementById("dropdownButton1");
+        const dropdownMenu1 = document.getElementById("dropdownMenu1");
+        const dropdownContainer1 = document.getElementById("dropdownContainer1");
+
+        function showDropdown() {
+            dropdownMenu1.classList.remove("opacity-0", "invisible");
+            dropdownMenu1.classList.add("opacity-100", "visible");
+            dropdownButton1.classList.add("dropdown-header");
+        }
+
+        function hideDropdown(event) {
+            // Kiểm tra nếu chuột vẫn trong container thì không ẩn dropdown
+            if (dropdownContainer1.contains(event.relatedTarget)) {
+                return;
+            }
+            dropdownMenu1.classList.add("opacity-0", "invisible");
+            dropdownMenu1.classList.remove("opacity-100", "visible");
+            dropdownButton1.classList.remove("dropdown-header");
+        }
+
+        // Khi chuột vào container (bao gồm cả button & menu) => Hiện dropdown
+        dropdownContainer1.addEventListener("mouseenter", showDropdown);
+
+        // Khi chuột rời khỏi container => Ẩn dropdown
+        dropdownContainer1.addEventListener("mouseleave", hideDropdown);
+    });
+</script>
+<script>
+    window.addEventListener("load", function() {
+        setTimeout(() => {
+            document.getElementById("loader").classList.add("fade-out");
+            document.getElementById("content").style.opacity = "1";
+
+            setTimeout(() => {
+                document.getElementById("loader").style.display = "none";
+            }, 400); // Đợi hiệu ứng fade-out hoàn tất
+        }, 200); // Giữ loader trong 0.3s để tránh giật
+    });
+</script>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Colors;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ColorsTableSeeder extends Seeder
 {

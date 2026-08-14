@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('cate_name');
+            $table->string('slug')->unique();
+            $table->string('cate_img');
             $table->string('group_cate');
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

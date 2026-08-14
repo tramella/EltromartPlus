@@ -1,0 +1,145 @@
+.nameproduct{
+    font-size: 34px;
+    font-weight: 600;
+}
+
+.regular-price1{
+    font-size: 24px;
+    text-decoration: line-through;
+    color: #515151;
+    font-weight: 400;
+}
+
+.sale-price1{
+    font-size: 27px;
+    font-weight: 600;
+    color: #E10600;
+}
+.value-quantity{
+    width: 184px;
+    height: 50px;
+    border: 1px solid #A1A1A1;
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
+}
+
+.title-quantity{
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.icon-quantity{
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.input-quantity{
+    width: 50px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    appearance: textfield;
+    color: #737272;
+    font-weight: 500;
+}
+.input-quantity::-webkit-inner-spin-button,
+.input-quantity::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Ẩn nút tăng/giảm trên Firefox */
+.input-quantity[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Style cho icon nếu cần */
+.value-color{
+    /* width: 50px;
+    height: 50px;
+    border: 5px solid #D9D9D9;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%; */
+}
+
+
+.btn-addcart{
+    width: 489px;
+    height: 60px;
+    font-size: 24px;
+    border-radius: 40px;
+
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    background-color: rgb(48, 47, 47);
+    cursor: pointer;
+}
+
+
+.w-productdetail{
+    width: 80%;
+}
+
+.productimage{
+    width: 550px;
+}
+
+
+.btn-wishlist{
+    width: 55px;
+    height: 55px;
+    border: 1px solid #575757;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    margin: 0px 30px;
+    cursor: pointer;
+}
+.img-wishlist{
+   width: 30px;
+   height: 30px;
+}
+
+
+.input-color{
+    width: 45px;
+    height: 45px;
+    border: 1px solid #D9D9D9;
+    /* border: none; */
+    border-radius: 50%;
+    outline: none;
+    padding: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    -webkit-appearance: none;
+}
+.input-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.input-color::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+/* Firefox */
+.input-color::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
+}

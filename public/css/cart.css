@@ -1,0 +1,118 @@
+.w-message-cart{
+    width: 80%;
+    padding: 50px 100px;
+    /*height: ;
+    */background-color: rgba(253, 197, 37, 0.15);
+    color: #828282;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    margin: 30px 20px;
+}
+
+.icon-infocart{
+    font-size: 35px;
+    margin-right: 20px;
+}
+
+.total-item-cart{
+    background-color: #0A6CDC;
+    padding: 5px;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    font-weight: 600;
+    right: 3.6rem;
+    top: 1.3rem;
+}
+.title-cart{
+    font-size: 40px;
+    font-weight: 800;
+    font-family: "Raleway";
+}
+
+.info-cart{
+    font-size: 18px;
+    color: #828282;
+    font-weight: 500;
+}
+
+.btn-shoppping{
+    padding: 20px 50px;
+    border: 1px solid #A1A1A1;
+    font-size: 22px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0px;
+    cursor: pointer;
+}
+.w-total-cart{
+    width: 70% ;
+    min-height: 50px;
+    padding: 5px 20px;
+}
+
+.w-left{
+    width: 30%;
+    border: 1px solid #B4B4B4;
+    text-align: start;
+    display: flex;
+    justify-content: start;
+    padding: 20px 30px;
+}
+
+.w-right{
+    width: 70%;
+    border-top: 1px solid #B4B4B4;
+    border-right: 1px solid #B4B4B4;
+    border-bottom: 1px solid #B4B4B4;
+    padding: 20px 30px;
+}
+.btn-check-pay{
+    background-color: #7E7E7E;
+    width: 400px;
+    height: 60px;
+    color:white;
+    padding: 20px 30px;
+    font-size: 28px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.input-coupon{
+    border: 1px solid #CEC9C9;
+    width: 250px;
+    height:40px;
+    padding: 10px 20px;
+    color: #A1A1A1;
+    font-size: 18px;
+}
+.btn-add-coupon{
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+    padding: 5px 20px;
+    background-color: #161880;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.input-coupon:focus{
+    border: 1px solid #CEC9C9;
+    outline: none;
+
+}
+
