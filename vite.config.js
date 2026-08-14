@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
-import tailwindcss from "tailwindcss"; // Import tailwindcss directly (not dynamically)
+import tailwindcss from "tailwindcss";
 
 export default defineConfig({
     plugins: [
@@ -12,15 +12,7 @@ export default defineConfig({
     css: {
         postcss: {
             plugins: [
-                tailwindcss({
-                    theme: {
-                        extend: {
-                            fontFamily: {
-                                sans: ["Figtree", "Arial", "sans-serif"],
-                            },
-                        },
-                    },
-                }),
+                tailwindcss(),
             ],
         },
     },
