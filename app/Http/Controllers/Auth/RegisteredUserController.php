@@ -36,25 +36,20 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
         if ($request->password !== $request->password_confirmation) {
             return Redirect::back()->withErrors(['password' => 'Password and confirmation do not match.'])->withInput();
         }
-        $user = new User();
-        // $user = User::create([
-        //     'firstname' => $request->firstname,
-        //     'lastname' => $request->lastname,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ]);
 
-        // event(new Registered($user));
+        $user = new User();
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
+        $user->avatar = 'default-avatar.png';
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Auth::login($user);
+        event(new Registered($user));
 
         return redirect(route('login', absolute: false));
     }
