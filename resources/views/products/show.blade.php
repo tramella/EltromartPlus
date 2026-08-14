@@ -59,44 +59,38 @@
 }
 </script>
 
-<div class="space-y-12 py-4">
+<div class="space-y-10 pb-8">
 
-    <!-- Breadcrumbs -->
-    <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-        <a href="{{ route('main') }}" class="hover:text-blue-600">Home</a>
-        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-        <a href="{{ route('products.index') }}" class="hover:text-blue-600">Products</a>
-        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-        <span class="text-slate-800 font-bold truncate max-w-xs" aria-current="page">{{ $name }}</span>
+    <!-- Breadcrumb Navigation -->
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+        <a href="{{ route('main') }}" class="hover:text-blue-600 transition-colors">Home</a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+        <a href="{{ route('products.index') }}" class="hover:text-blue-600 transition-colors">Products</a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+        <span class="text-slate-800 font-bold truncate max-w-xs">{{ $name }}</span>
     </nav>
 
-    <!-- Product Main Card Grid -->
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <!-- Main Product Card Layout -->
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         
-        <!-- Left: Product Image Gallery (LCP Priority Image) -->
-        <div class="space-y-4" x-data="{ mainImage: '{{ $imageUrl }}' }">
-            <div class="relative w-full h-[380px] sm:h-[460px] rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6 overflow-hidden group">
-                <img :src="mainImage" alt="{{ $name }}" fetchpriority="high" loading="eager" width="400" height="400" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
-                
-                @if($salePrice > 0 && $salePrice < $regularPrice)
-                    <div class="absolute top-4 left-4 bg-rose-500 text-white font-bold text-xs px-3 py-1.5 rounded-xl shadow-md">
-                        SALE OFF
-                    </div>
-                @endif
-            </div>
+        <!-- Left: Gallery Image Preview -->
+        <div class="relative w-full h-[320px] sm:h-[440px] rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6 overflow-hidden group">
+            <img src="{{ $imageUrl }}" 
+                 alt="{{ $name }}" 
+                 fetchpriority="high" 
+                 width="440" 
+                 height="440" 
+                 class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" 
+                 onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
 
-            <!-- Image Thumbnails -->
-            <div class="flex items-center gap-3 overflow-x-auto pb-2">
-                <button @click="mainImage = '{{ $imageUrl }}'" aria-label="View main product image" class="w-20 h-20 rounded-xl bg-slate-50 border-2 border-blue-500 p-2 shrink-0 cursor-pointer overflow-hidden">
-                    <img src="{{ $imageUrl }}" alt="{{ $name }} Thumbnail" width="80" height="80" class="w-full h-full object-contain" onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
-                </button>
-                <button @click="mainImage = '{{ asset('images/sp1.jpg') }}'" aria-label="View alternate image 1" class="w-20 h-20 rounded-xl bg-slate-50 border border-slate-200 p-2 shrink-0 cursor-pointer overflow-hidden hover:border-blue-400">
-                    <img src="{{ asset('images/sp1.jpg') }}" alt="{{ $name }} Alternate 1" width="80" height="80" class="w-full h-full object-contain" />
-                </button>
-                <button @click="mainImage = '{{ asset('images/laptop.jpg') }}'" aria-label="View alternate image 2" class="w-20 h-20 rounded-xl bg-slate-50 border border-slate-200 p-2 shrink-0 cursor-pointer overflow-hidden hover:border-blue-400">
-                    <img src="{{ asset('images/laptop.jpg') }}" alt="{{ $name }} Alternate 2" width="80" height="80" class="w-full h-full object-contain" />
-                </button>
-            </div>
+            @if($salePrice > 0 && $salePrice < $regularPrice)
+                @php
+                    $discount = round((($regularPrice - $salePrice) / $regularPrice) * 100);
+                @endphp
+                <div class="absolute top-4 left-4 bg-rose-500 text-white font-black text-xs px-3 py-1.5 rounded-xl shadow-md uppercase tracking-wider">
+                    -{{ $discount }}% OFF
+                </div>
+            @endif
         </div>
 
         <!-- Right: Product Info & Actions -->
@@ -132,7 +126,7 @@
 
                 <!-- Availability Status -->
                 <div class="flex items-center gap-2 text-xs font-semibold">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg">
                         {{ $status }} ({{ $quantityStock }} units available)
                     </span>
@@ -167,34 +161,34 @@
             <div class="space-y-4 pt-4 border-t border-slate-100" x-data="{ qty: 1 }">
                 <!-- Quantity Adjustment -->
                 <div class="flex items-center gap-4">
-                    <span class="text-sm font-bold text-slate-700">Quantity:</span>
-                    <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                        <button @click="if(qty > 1) qty--" type="button" aria-label="Decrease quantity" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-200 font-bold text-lg cursor-pointer">-</button>
-                        <span class="w-12 text-center font-bold text-slate-800 text-sm" x-text="qty"></span>
-                        <button @click="qty++" type="button" aria-label="Increase quantity" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-200 font-bold text-lg cursor-pointer">+</button>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Select Quantity:</span>
+                    <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50 h-11">
+                        <button @click="if(qty > 1) qty--" type="button" aria-label="Decrease quantity" class="w-10 h-full flex items-center justify-center text-slate-600 hover:bg-slate-200 font-bold text-base transition-colors cursor-pointer">-</button>
+                        <span class="w-14 text-center font-bold text-slate-800 text-sm" x-text="qty"></span>
+                        <button @click="qty++" type="button" aria-label="Increase quantity" class="w-10 h-full flex items-center justify-center text-slate-600 hover:bg-slate-200 font-bold text-base transition-colors cursor-pointer">+</button>
                     </div>
                 </div>
 
-                <!-- Buttons Component (Visually Identical Height, Padding, Border Radius, Typography) -->
+                <!-- Buttons Component (Uniform Height h-12, Rounded-2xl, Matched Shadow & Hover effects) -->
                 <div class="flex flex-col sm:flex-row items-stretch gap-3">
                     <form action="{{ route('cart.add', ['id' => $id]) }}" method="POST" class="flex-1">
                         @csrf
                         <input type="hidden" name="quantity" :value="qty" />
-                        <button type="submit" class="w-full h-13 px-6 rounded-2xl font-bold text-sm uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2.5 cursor-pointer">
-                            <i class="fa-solid fa-cart-shopping text-base"></i>
+                        <button type="submit" class="w-full h-12 px-5 rounded-2xl font-bold text-xs uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-cart-shopping text-sm"></i>
                             <span>Add to Cart</span>
                         </button>
                     </form>
 
-                    <a href="{{ route('checkout.index') }}" class="flex-1 h-13 px-6 rounded-2xl font-bold text-sm uppercase tracking-wider text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-md transition-all flex items-center justify-center gap-2.5 cursor-pointer">
-                        <i class="fa-solid fa-bolt text-base"></i>
+                    <a href="{{ route('checkout.index') }}" class="flex-1 h-12 px-5 rounded-2xl font-bold text-xs uppercase tracking-wider text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-bolt text-sm text-yellow-400"></i>
                         <span>Buy Now</span>
                     </a>
 
                     <form action="{{ route('wishlist.toggle', ['id' => $id]) }}" method="POST">
                         @csrf
-                        <button type="submit" aria-label="Add to Wishlist" class="h-13 w-13 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-rose-500 border border-slate-200 transition-all flex items-center justify-center shrink-0 cursor-pointer">
-                            <i class="fa-solid fa-heart text-xl"></i>
+                        <button type="submit" aria-label="Add to Wishlist" class="h-12 w-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-rose-500 border border-slate-200 transition-all flex items-center justify-center shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-heart text-lg"></i>
                         </button>
                     </form>
                 </div>

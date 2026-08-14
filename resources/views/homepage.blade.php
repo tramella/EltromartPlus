@@ -6,7 +6,7 @@
 @section('content')
 <div class="space-y-14 pb-8">
 
-    <!-- 1. Hero Slider Section (LCP Prioritized Main Banner) -->
+    <!-- ===== 1. HERO SLIDER SECTION (LCP prioritized) ===== -->
     <div class="hero-animate relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-800">
         <div x-data="{
             currentSlide: 0,
@@ -37,7 +37,7 @@
             prev() { this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length; }
         }" class="relative h-[380px] sm:h-[460px] md:h-[520px] w-full">
 
-            <!-- Slides Template -->
+            <!-- Slides rendered via Alpine x-for -->
             <template x-for="(slide, index) in slides" :key="index">
                 <div x-show="currentSlide === index"
                      x-transition:enter="transition ease-out duration-700"
@@ -48,7 +48,9 @@
                      x-transition:leave-end="opacity-0"
                      class="absolute inset-0 w-full h-full">
 
-                    <img :src="slide.image" :alt="slide.title" fetchpriority="high" loading="eager" width="1200" height="520" class="w-full h-full object-cover object-center opacity-40" onError="this.onerror=null;this.src='{{ asset('images/sub_sildeshow.png') }}';" />
+                    <img :src="slide.image" :alt="slide.title" fetchpriority="high" loading="eager" width="1200" height="520"
+                         class="w-full h-full object-cover object-center opacity-40"
+                         onError="this.onerror=null;this.src='{{ asset('images/sub_sildeshow.png') }}';" />
                     <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent flex items-center p-8 sm:p-12 md:p-16">
                         <div class="max-w-xl space-y-4">
                             <span class="inline-block px-3 py-1 bg-blue-600/90 text-white font-bold text-xs rounded-full uppercase tracking-wider shadow-sm">
@@ -67,31 +69,37 @@
                 </div>
             </template>
 
-            <!-- Slide Controls -->
-            <button @click="prev()" aria-label="Previous Slide" class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
+            <!-- Previous slide button -->
+            <button @click="prev()" aria-label="Previous Slide"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button @click="next()" aria-label="Next Slide" class="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
+
+            <!-- Next slide button -->
+            <button @click="next()" aria-label="Next Slide"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
 
-            <!-- Indicators -->
+            <!-- Slide indicator dots -->
             <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                 <template x-for="(slide, index) in slides" :key="index">
-                    <button @click="currentSlide = index" aria-label="Go to slide" class="w-3 h-3 rounded-full transition-all cursor-pointer" :class="currentSlide === index ? 'bg-blue-500 w-8' : 'bg-white/40'"></button>
+                    <button @click="currentSlide = index" aria-label="Go to slide"
+                            class="w-3 h-3 rounded-full transition-all cursor-pointer"
+                            :class="currentSlide === index ? 'bg-blue-500 w-8' : 'bg-white/40'"></button>
                 </template>
             </div>
         </div>
     </div>
 
-    <!-- Value Propositions Banner -->
+    <!-- ===== VALUE PROPOSITIONS BANNER ===== -->
     <div class="gsap-reveal grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
             <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-truck-fast text-xl"></i>
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base">Free Shipping & Returns</h4>
+                <h4 class="font-bold text-slate-800 text-base">Free Shipping &amp; Returns</h4>
                 <p class="text-xs text-slate-500">Free delivery on orders over $200</p>
             </div>
         </div>
@@ -118,31 +126,34 @@
     </div>
 
     @php
-        // Database queries optimized with eager loading and explicit limits
+        // Fetch flash sale products (products with a sale price), fallback to any products
         $flashProducts = \App\Models\Products::with(['category', 'brand'])->where('sale_price', '>', 0)->take(4)->get();
         if ($flashProducts->isEmpty()) {
             $flashProducts = \App\Models\Products::with(['category', 'brand'])->take(4)->get();
         }
 
+        // Fetch featured/new arrival products (skip the first 4 to avoid duplicates with flash sale)
         $featuredProducts = \App\Models\Products::with(['category', 'brand'])->skip(4)->take(8)->get();
         if ($featuredProducts->isEmpty()) {
             $featuredProducts = \App\Models\Products::with(['category', 'brand'])->take(8)->get();
         }
 
+        // Fetch active categories and brands
         $categories = \App\Models\Categories::where('status', 1)->get();
-        $brands = \App\Models\Brands::where('status', 1)->get();
+        $brands     = \App\Models\Brands::where('status', 1)->get();
 
-        $categoryMeta = [
-            1 => ['img' => 'mobilephone.png', 'gradient' => 'from-blue-600 to-indigo-700', 'shadow' => 'shadow-blue-500/25'],
-            2 => ['img' => 'Laptop.png', 'gradient' => 'from-slate-800 to-slate-950', 'shadow' => 'shadow-slate-900/25'],
-            3 => ['img' => 'Accessories.png', 'gradient' => 'from-indigo-600 to-purple-700', 'shadow' => 'shadow-indigo-500/25'],
-            4 => ['img' => 'iPad.png', 'gradient' => 'from-emerald-600 to-teal-700', 'shadow' => 'shadow-emerald-500/25'],
-            5 => ['img' => 'PCs.png', 'gradient' => 'from-blue-900 to-slate-900', 'shadow' => 'shadow-blue-900/25'],
-            6 => ['img' => 'Services.png', 'gradient' => 'from-rose-600 to-pink-700', 'shadow' => 'shadow-rose-500/25'],
+        // Maps category ID to its representative icon image
+        $categoryImg = [
+            1 => 'mobilephone.png',
+            2 => 'Laptop.png',
+            3 => 'Accessories.png',
+            4 => 'iPad.png',
+            5 => 'PCs.png',
+            6 => 'Services.png',
         ];
     @endphp
 
-    <!-- 2. Flash Sales Section -->
+    <!-- ===== 2. FLASH SALES SECTION ===== -->
     <div class="gsap-reveal space-y-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -160,24 +171,15 @@
         </div>
 
         <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($flashProducts as $prod)
+            @forelse($flashProducts as $prod)
                 <x-product-card :product="$prod" />
-            @endforeach
+            @empty
+                <p class="col-span-4 text-center text-slate-400 text-sm py-8">No flash sale products available right now.</p>
+            @endforelse
         </div>
     </div>
 
-
-    </div>
-    </div>
-
-        <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($flashProducts as $prod)
-                <x-product-card :product="$prod" />
-            @endforeach
-        </div>
-    </div>
-
-    <!-- 3. Shop by Category Section (Pastel Blue Style) -->
+    <!-- ===== 3. SHOP BY CATEGORY SECTION ===== -->
     <div class="gsap-reveal space-y-6">
         <div class="text-center max-w-xl mx-auto space-y-2">
             <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Shop by Category</h2>
@@ -186,16 +188,6 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
             @if(isset($categories) && count($categories) > 0)
-                @php
-                    $categoryImg = [
-                        1 => 'mobilephone.png',
-                        2 => 'Laptop.png',
-                        3 => 'Accessories.png',
-                        4 => 'iPad.png',
-                        5 => 'PCs.png',
-                        6 => 'Services.png',
-                    ];
-                @endphp
                 @foreach($categories as $cat)
                     @php
                         $img = $categoryImg[$cat->id] ?? 'mobilephone.png';
@@ -203,8 +195,15 @@
                     <a href="{{ route('products.index', ['category' => $cat->id]) }}"
                        class="group flex flex-col items-center justify-center gap-3 p-6 rounded-3xl bg-blue-50 ring-1 ring-blue-100 hover:ring-2 hover:ring-blue-300 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-300 aspect-square">
 
+                        <!-- Category icon with solid colored background for contrast -->
                         <div class="w-16 h-16 rounded-2xl bg-blue-500 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
-                            <img src="{{ asset('images/' . $img) }}" alt="{{ $cat->cate_name }}" width="34" height="34" loading="lazy" class="w-8 h-8 object-contain" style="filter: brightness(0) invert(1);" onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
+                            <img src="{{ asset('images/' . $img) }}"
+                                 alt="{{ $cat->cate_name }}"
+                                 width="34" height="34"
+                                 loading="lazy"
+                                 class="w-8 h-8 object-contain"
+                                 style="filter: brightness(0) invert(1);"
+                                 onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
                         </div>
 
                         <span class="font-bold text-blue-600 group-hover:text-blue-700 text-sm text-center leading-tight transition-colors duration-300">{{ $cat->cate_name }}</span>
@@ -214,7 +213,7 @@
         </div>
     </div>
 
-    <!-- 4. Featured / New Products Section -->
+    <!-- ===== 4. FEATURED & NEW ARRIVALS SECTION ===== -->
     <div class="gsap-reveal space-y-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -222,7 +221,7 @@
                     <i class="fa-solid fa-fire text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">FEATURED & NEW ARRIVALS</h2>
+                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">FEATURED &amp; NEW ARRIVALS</h2>
                     <p class="text-xs text-slate-500">Discover our newest technological arrivals and top sellers</p>
                 </div>
             </div>
@@ -232,26 +231,28 @@
         </div>
 
         <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($featuredProducts as $prod)
+            @forelse($featuredProducts as $prod)
                 <x-product-card :product="$prod" />
-            @endforeach
+            @empty
+                <p class="col-span-4 text-center text-slate-400 text-sm py-8">No featured products available right now.</p>
+            @endforelse
         </div>
     </div>
 
-    <!-- 5. Featured Brands Showcase Section -->
+    <!-- ===== 5. FEATURED BRANDS SHOWCASE ===== -->
     <div class="gsap-reveal bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6">
         <h3 class="text-center text-xs font-bold uppercase tracking-widest text-slate-400">Featured Technology Brands</h3>
         <div class="flex flex-wrap items-center justify-around gap-6 opacity-80 grayscale hover:grayscale-0 transition-all">
-            <img src="{{ asset('images/AppleLogo.jpg') }}" alt="Apple Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/AppleLogo.jpg') }}"     alt="Apple Brand Logo"   width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
             <img src="{{ asset('images/Samsung-Logo-06.jpg') }}" alt="Samsung Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
-            <img src="{{ asset('images/DellLogo.jpg') }}" alt="Dell Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
-            <img src="{{ asset('images/LogoAsus.jpg') }}" alt="Asus Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
-            <img src="{{ asset('images/XiaomiLogo.jpg') }}" alt="Xiaomi Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
-            <img src="{{ asset('images/LevonoLogo.jpg') }}" alt="Lenovo Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/DellLogo.jpg') }}"      alt="Dell Brand Logo"    width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/LogoAsus.jpg') }}"      alt="Asus Brand Logo"    width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/XiaomiLogo.jpg') }}"    alt="Xiaomi Brand Logo"  width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/LevonoLogo.jpg') }}"    alt="Lenovo Brand Logo"  width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
         </div>
     </div>
 
-    <!-- 6. Promotional / CTA Section -->
+    <!-- ===== 6. PROMOTIONAL / CTA SECTION ===== -->
     <div class="gsap-reveal bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-slate-800">
         <div class="space-y-4 max-w-xl text-center md:text-left">
             <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-xs rounded-full uppercase tracking-wider">

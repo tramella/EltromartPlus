@@ -26,7 +26,7 @@ class ProductController extends Controller
             $query->where('product_name', 'like', '%' . $request->search . '%');
         }
 
-        // Database-level pagination (8 products per page) preserving filter parameters in query string
+        // Database-level pagination set to 8 products per page preserving query parameters
         $products = $query->latest('id')->paginate(6)->withQueryString();
         $categories = Categories::where('status', 1)->get();
         $brands = Brands::where('status', 1)->get();
@@ -36,8 +36,8 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        // Eager load only required relations for single product
-        $product = Products::with(['category', 'brand', 'colors'])->find($id);
+        // Eager load category, brand, and color relations safely
+        $product = Products::with(['category', 'brand', 'color'])->find($id);
 
         if (!$product) {
             $product = (object) [
@@ -56,6 +56,7 @@ class ProductController extends Controller
                 'product_img' => 'sp1.jpg',
                 'category' => (object)['cate_name' => 'Technology'],
                 'brand' => (object)['brand_name' => 'Eltromart'],
+                'color' => (object)['hex_code' => '#1e293b', 'color_name' => 'Space Gray'],
             ];
 
             $relatedProducts = Products::with(['category', 'brand'])->take(4)->get();
@@ -63,7 +64,7 @@ class ProductController extends Controller
             // Limit related products query efficiently using category match
             $relatedProducts = Products::with(['category', 'brand'])
                 ->where('id', '!=', $id)
-                ->where('cate_id', $product->cate_id)
+                ->where('cate_id', $product->cate_id ?? 1)
                 ->take(4)
                 ->get();
 
