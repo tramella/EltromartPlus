@@ -2,88 +2,133 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Products;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Cart;
-use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    //
-
     public function index()
     {
-        $cartItems = Auth::check() ? Cart::where('user_id', Auth::id())->orderBy('created_at', 'desc')->with('product')->get() : [];
-        $message = $cartItems->isEmpty() ? 'Your cart is empty!' : null;
-        $totalQuantity = $cartItems->count();
-        session(['cart_total' => $totalQuantity]);
-        return view('cart', compact('cartItems', 'message', 'totalQuantity'));
+        $cart = session()->get('cart', []);
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+        $vat = $subtotal * 0.08; // 8% VAT
+        $shipping = $subtotal > 0 ? ($subtotal > 200 ? 0 : 15) : 0;
+        $total = $subtotal + $vat + $shipping;
 
-        // return view('cart', compact('cartItems'));
+        return view('cart.index', compact('cart', 'subtotal', 'vat', 'shipping', 'total'));
     }
-    // public function getCartCount()
-    // {
-    //     // $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->sum('quantity') : 0;
-    //     $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
-    //     return response()->json(['count' => $cartCount]);
-    // }
 
-    public function addToCart(Request $request)
+    public function add(Request $request, $id = null)
     {
-        $product = Products::findOrFail($request->product_id);
-        $price = $product->sale_price ?? $product->regular_price;
-        $cartItem = Cart::where(
-            'user_id',
-            Auth::id()
-        )->where(
-            'product_id',
-            $request->product_id
-        )->first();
+        $productId = $id ?? $request->input('product_id');
+        $quantity = (int) ($request->input('quantity', 1));
+        
+        $product = Products::find($productId);
 
-        if ($cartItem) {
-            $cartItem->update([
-                'quantity' => $cartItem->quantity + $request->quantity
-            ]);
+        $cart = session()->get('cart', []);
+
+        if ($product) {
+            $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] += $quantity;
+            } else {
+                $cart[$productId] = [
+                    'id' => $product->id,
+                    'name' => $product->product_name,
+                    'price' => $price,
+                    'regular_price' => $product->regular_price,
+                    'quantity' => $quantity,
+                    'image' => $product->product_img,
+                    'storage' => $product->storage ?? 'Default',
+                    'ram' => $product->RAM ?? 'Default',
+                ];
+            }
         } else {
-            Cart::create([
-                'user_id' => Auth::id(),
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-                'price' => $price
+            // Demo fallback item if adding demo product before DB seeding
+            $demoId = $productId ?? 1;
+            if (isset($cart[$demoId])) {
+                $cart[$demoId]['quantity'] += $quantity;
+            } else {
+                $cart[$demoId] = [
+                    'id' => $demoId,
+                    'name' => 'Computer Mac and Accessories',
+                    'price' => 179.99,
+                    'regular_price' => 199.99,
+                    'quantity' => $quantity,
+                    'image' => 'sp1.jpg',
+                    'storage' => '256GB',
+                    'ram' => '8GB',
+                ];
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Product added to cart!',
+                'cart_count' => array_sum(array_column($cart, 'quantity')),
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'The product added successfully!');
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-    public function removeCart($productId)
+    public function update(Request $request, $id = null)
     {
-        Cart::where('user_id', Auth::id())->where('product_id', $productId)->delete();
-        return redirect()->route('cart.index');
-    }
+        $productId = $id ?? $request->input('product_id');
+        $quantity = (int) $request->input('quantity', 1);
 
-    public function checkToPay(Request $request)
-    {
+        $cart = session()->get('cart', []);
 
-        $cartItems = $request->input('cart', []);
-        $total = $request->input('cart');
-        $cartItems = $request->input('cart', []);
-        $total = $request->input('total', 0);
-
-        // Chuyển đổi mảng dữ liệu thành dạng phù hợp
-        $cartFormatted = [];
-        foreach ($cartItems as $productId => $item) {
-            $cartFormatted[] = [
-                'img' => $item['img'],
-                'name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'product_img' => $item['product_img'] ?? 'default.png', // Tránh lỗi nếu thiếu ảnh
-            ];
+        if (isset($cart[$productId])) {
+            if ($quantity > 0) {
+                $cart[$productId]['quantity'] = $quantity;
+            } else {
+                unset($cart[$productId]);
+            }
+            session()->put('cart', $cart);
         }
 
-        return view('checktopay', compact('cartFormatted', 'total'));
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart updated!',
+                'cart' => $cart,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Cart updated successfully!');
+    }
+
+    public function remove(Request $request, $id = null)
+    {
+        $productId = $id ?? $request->input('product_id');
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            unset($cart[$productId]);
+            session()->put('cart', $cart);
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from cart!',
+                'cart_count' => array_sum(array_column($cart, 'quantity')),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Item removed from cart!');
+    }
+
+    public function clear()
+    {
+        session()->forget('cart');
+        return redirect()->route('cart.index')->with('success', 'Cart cleared!');
     }
 }

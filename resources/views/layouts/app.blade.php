@@ -1,90 +1,136 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" href="{{ asset('images/Logo_small.png') }}" type="image/x-icon">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- SEO Primary Meta Tags -->
+    <title>@yield('title', config('app.name', 'EltromartPlus') . ' - Premium Technological Equipment Store')</title>
+    <meta name="description" content="@yield('meta_description', 'EltromartPlus is your leading technology destination for premium smartphones, laptops, audio gear, and electronic accessories with 24/7 support and fast shipping.')">
+    <link rel="canonical" href="@yield('canonical_url', url()->current())" />
+    <link rel="icon" href="{{ asset('images/Logo_small.png') }}" type="image/png">
+
+    <!-- Open Graph / Social Meta Tags -->
+    @hasSection('og_tags')
+        @yield('og_tags')
+    @else
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="EltromartPlus - Premium Technological Equipment Store">
+        <meta property="og:description" content="Explore flagship smartphones, powerful laptops, workstations, and high quality audio gear with 24/7 support.">
+        <meta property="og:image" content="{{ asset('images/eltromart_plus.png') }}">
+    @endif
+
+    <!-- WebSite Structured Data (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "EltromartPlus",
+      "url": "{{ url('/') }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ route('products.index') }}?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lexend:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link href="{{ asset('css/main.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/user.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/productdetail.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/blog.css') }}?v={{ time() }}" rel="stylesheet" />
-    <link href="{{ asset('css/wishlist.css') }}?v={{ time() }}" rel="stylesheet" />
-    <link href="{{ asset('css/cart.css') }}?v={{ time() }}" rel="stylesheet" />
-    <link href="{{ asset('css/pay.css') }}?v={{ time() }}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
-    <!-- LightSlider CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightslider@1.1.6/dist/css/lightslider.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- jQuery (required) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- LightSlider JS -->
-    <script src="https://cdn.jsdelivr.net/npm/lightslider@1.1.6/dist/js/lightslider.min.js"></script>
-
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"> --}}
-    {{-- </script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @vite(entrypoints: ['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vite Assets -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased text-slate-800 bg-slate-50 flex flex-col min-h-screen relative">
+    <!-- Top Announcement Bar -->
+    <div class="bg-blue-600 text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex justify-between items-center max-w-7xl mx-auto w-full rounded-b-xl shadow-sm">
+        <div class="hidden md:flex items-center gap-2">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Free Express Shipping on Orders Over $200!</span>
+        </div>
+        <div class="mx-auto md:mx-0 flex items-center gap-4">
+            <span>24/7 Customer Support: <strong class="font-semibold text-yellow-300">(+84) 456 787</strong></span>
+        </div>
+    </div>
 
-    <div class="min-h-screen bg-white-100 dark:bg-gray-900 ">
-        {{-- @include('layouts.nav') --}}
-        {{-- NAVBAR --}}
-        <nav class="w-full nav-header navbar-container">
-            <div class="top-nav flex justify-center space-x-12 items-center py-4">
-                <div class="col-3 space-x-5">
-                    <a href="/">
-                        <img src="{{ asset('images/eltromart+.png') }}" alt="logo" class="logo_project" />
-                    </a>
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 w-full navbar-container shadow-lg border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Brand Logo -->
+                <a href="{{ route('main') }}" class="flex items-center shrink-0 group">
+                    <img src="{{ asset('images/eltromart_plus.png') }}" alt="EltromartPlus Technological Equipment Store" width="220" height="46" class="logo_project transition-transform duration-300 group-hover:scale-105" onError="this.onerror=null;this.src='{{ asset('images/Logo_small.png') }}';" />
+                </a>
+
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-xl mx-4">
+                    <form action="{{ route('products.index') }}" method="GET" class="relative w-full" role="search">
+                        <input type="text" name="search" placeholder="Search laptops, smartphones, accessories..." class="w-full pl-5 pr-12 py-2.5 rounded-full bg-slate-900/60 border border-slate-700/70 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition-all shadow-inner" value="{{ request('search') }}" />
+                        <button type="submit" aria-label="Search" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center transition-colors shadow-md cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </button>
+                    </form>
                 </div>
-                <form action="{{ route('product.search') }}" class="col-4 space-x-3 font-bold flex container-search"
-                    method="get">
-                    <input type="text" name="query" class="input-search-header"
-                        vvalue="{{ old('query', request('query')) }}" />
-                    <div class="logoSearch flex justify-center items-center">
-                        <img src="{{ asset('images/Search.png') }}" alt="logoSearch" class="imgSearch" />
-                    </div>
-                </form>
-                <div class="col-5 flex justify-center items-center space-x-12">
-                    <div class="font-medium text-contact">
-                        <p>Available 24/7 at</p>
-                        <p>(+84) 456 787</p>
-                    </div>
-                    <div class="flex justify-end items-center space-x-6">
-                        <a href="{{ route('wishlist.index') }}" class="icon_header flex justify-between items-center">
-                            <img src="{{ asset('images/Heart.png') }}" class="image-header" />
-                            <p class="font-semibold">Wish List</p>
-                        </a>
 
-                        {{-- @auth
-                            <div>
-                                <div class="icon_header flex justify-between items-center">
-                                    <img src="{{ asset('images/Logoutheader.png') }}" class="icon_header_signin"
-                                        width="20" />
-                                    <form method="post" action="{{ route('logout') }}">
+                <!-- Right Action Icons (Wishlist, Cart, Auth) -->
+                <div class="flex items-center gap-5 sm:gap-6">
+                    <!-- Wishlist Link -->
+                    @php
+                        $wishlistCount = count(session()->get('wishlist', []));
+                    @endphp
+                    <a href="{{ route('wishlist.index') }}" aria-label="View Wishlist" class="relative text-slate-300 hover:text-white flex flex-col items-center group transition-colors">
+                        <div class="relative p-1.5">
+                            <i class="fa-regular fa-heart text-xl group-hover:scale-110 transition-transform"></i>
+                            @if($wishlistCount > 0)
+                                <span class="badge-count">{{ $wishlistCount }}</span>
+                            @endif
+                        </div>
+                        <span class="text-[11px] font-medium hidden sm:inline text-slate-300">Wishlist</span>
+                    </a>
+
+                    <!-- Cart Link -->
+                    @php
+                        $cartItems = session()->get('cart', []);
+                        $cartCount = array_sum(array_column($cartItems, 'quantity'));
+                    @endphp
+                    <a href="{{ route('cart.index') }}" aria-label="View Cart" class="relative text-slate-300 hover:text-white flex flex-col items-center group transition-colors">
+                        <div class="relative p-1.5">
+                            <i class="fa-solid fa-bag-shopping text-xl group-hover:scale-110 transition-transform"></i>
+                            @if($cartCount > 0)
+                                <span class="badge-count">{{ $cartCount }}</span>
+                            @endif
+                        </div>
+                        <span class="text-[11px] font-medium hidden sm:inline text-slate-300">Cart</span>
+                    </a>
+
+                    <!-- User Account / Auth -->
+                    <div class="pl-2 border-l border-slate-700/80">
+                        @auth
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" class="flex items-center gap-2 text-slate-200 hover:text-white font-medium text-xs sm:text-sm bg-slate-800/80 hover:bg-slate-800 px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer">
+                                    <i class="fa-solid fa-circle-user text-base text-blue-400"></i>
+                                    <span class="hidden sm:inline">{{ Auth::user()->firstname ?? Auth::user()->name ?? 'Account' }}</span>
+                                    <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl py-2 border border-slate-100 z-50 text-slate-700 text-sm">
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-slate-50 transition-colors">
+                                        <i class="fa-solid fa-user-gear mr-2 text-slate-400"></i> Edit Profile
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="font-semibold">Logout</button>
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-rose-600 hover:bg-rose-50 transition-colors font-medium">
+                                            <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Log Out
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -107,340 +153,156 @@
                         @endauth
 
                         @guest
-                            <div class="icon_header flex justify-between items-center">
-                                <img src="{{ asset('images/MaleUser.png') }}"class="icon_header_signin" />
-                                <a href="{{ route('login') }}" class="font-semibold">Sign In</a>
-                            </div>
+                            <a href="{{ route('login') }}" class="btn-modern-primary text-xs py-2 px-4">
+                                <i class="fa-solid fa-user mr-1.5 text-xs"></i> Sign In
+                            </a>
                         @endguest
-
-                        <a href="{{ route('cart.index') }}" class="icon_header flex justify-between items-center">
-                            <img src="{{ asset('images/ShoppingCart.png') }}"class="image-header" />
-                            <p class="font-semibold">Cart</p>
-                            <span id="cart-count"
-                                class="absolute text-white rounded-full flex justify-center items-center total-item-cart">
-                                {{ session('cart_total', 0) }}
-                            </span>
-                        </a>
                     </div>
-
-                </div>
-            </div>
-            <div class="bottom-nav link-header flex items-end justify-between bottom-0">
-                <div class="link-header flex items-end justify-center space-x-6 ms-10 bottom-0">
-                    <a href="{{ route('product.index') }}" class="link-header-item">
-                        <p class="link-header-text font-normal all-iconproduct"><i class="fa-solid fa-bars"></i></p>
-                    </a>
-                    <a href="{{ route('product.mobile') }}" class="link-header-item pb-1">
-                        <img src="{{ asset('images/mobilephone.png') }}" alt="logo" class="link-header-img" />
-                        <p class="link-header-text font-normal">Mobile Phones</p>
-                    </a>
-                    <a href="{{ route('product.laptop') }}" class="link-header-item pb-1">
-                        <img src="{{ asset('images/Laptop.png') }}" alt="logo" class="link-header-img" />
-                        <p class="link-header-text font-normal">Laptops</p>
-                    </a>
-
-                    <div id="dropdownContainer1" class="relative inline-block bottom-0">
-                        <!-- Dropdown Button -->
-                        <div id="dropdownButton1"
-                            class="link-header-item flex items-center gap-0 px-5 pt-2 pb-1 cursor-pointer">
-                            <img src="{{ asset('images/Accessories.png') }}" alt="logo"
-                                class="link-header-img" />
-                            <p class="link-header-text font-normal">Accessories</p>
-                        </div>
-
-                        <!-- Dropdown Menu -->
-                        <div id="dropdownMenu1"
-                            class="absolute left-0 top-8 w-accessories bg-white shadow-lg opacity-0 invisible transition-all duration-300 cursor-pointer">
-                            <div class="w-full flex justify-start items-start py-4 ps-2">
-                                <div class="w-full flex flex-col pe-2 justify-start items-start">
-                                    {{-- Mobile --}}
-                                    <p class="title-catedropdown">Mobile Accessories</p>
-                                    <div class="w-full flex flex-wrap justify-start items-center mb-3">
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/BackupCharger1.png') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Backup Charger</p>
-                                        </div>
-                                        <a href="{{ route('product.mobileAcc.case') }}"
-                                            class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/cases1.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Cases</p>
-                                        </a>
-                                        <a href="{{ route('product.mobileAcc.charger') }}"
-                                            class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/ChargerCable1.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Charger, charging cable</p>
-                                        </a>
-                                        <a href="{{ route('product.mobileAcc.apdapter') }}"
-                                            class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/adapter-sac-2-cong-usb-type-c-iq3-20w-anker-a2348-den-1-638622776812389109-750x500.jpg') }}"
-                                                    alt="logo" class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Adaper</p>
-                                        </a>
-                                    </div>
-                                    {{-- Brand --}}
-                                    <p class="title-catedropdown">Top Brands</p>
-                                    <div class="w-full flex flex-wrap justify-start items-center mb-3">
-                                        @foreach ($brands as $brand)
-                                            <div class="cate-dropdown2 flex flex-col justify-center items-center me-2">
-                                                <div class=" flex justify-center items-center">
-                                                    <img src="{{ asset('images/' . $brand->brand_img) }}"
-                                                        alt="logo" class="cate-header-img1" />
-                                                </div>
-                                                {{-- <p class="text-cate-header">{{ $brand->brand_name }}</p> --}}
-                                            </div>
-                                        @endforeach
-
-                                    </div>
-
-                                    {{-- Storage --}}
-                                    <p class="title-catedropdown">Storage Devices</p>
-                                    <div class="w-full flex flex-wrap justify-start items-center mb-3">
-                                        <div class="cate-dropdown flex flex-col justify-center items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/pc.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Desktop Computers</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-center items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/pc.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Desktop Computers</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-center items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/pc.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Desktop Computers</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="w-full flex flex-col ps-3 justify-start items-start">
-                                    <p class="title-catedropdown">Audio Equipment</p>
-                                    <div class="w-full flex flex-wrap justify-start items-start mb-3">
-
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/bluetoothheadphone_processed.jpg') }}"
-                                                    alt="logo" class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Bluetooth headphones</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/wired-headphones_processed.jpg') }}"
-                                                    alt="logo" class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Wired headphones</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/over-ear_processed.jpg') }}"
-                                                    alt="logo" class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Over-ear headphones</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/micros_processed.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Micros</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/Speaker_processed.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Speakers</p>
-                                        </div>
-
-                                    </div>
-
-                                    {{-- Laptop --}}
-                                    <p class="title-catedropdown">Accessories For Laptop</p>
-                                    <div class="w-full flex flex-wrap justify-start items-center mb-3">
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <img src="{{ asset('images/mouses_processed.jpg') }}" alt="logo"
-                                                    class="cate-header-img" />
-                                            </div>
-                                            <p class="text-cate-header">Mouses</p>
-                                        </div>
-                                        <div class="cate-dropdown flex flex-col justify-start items-center">
-                                            <div class="border-cate flex justify-center items-center">
-                                                <div class="img-w"><img
-                                                        src="{{ asset('images/Keyborads_processed.jpg') }}"
-                                                        alt="logo" class="cate-header-img3" />
-                                                </div>
-                                            </div>
-                                            <p class="text-cate-header">Keyboards</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="{{ route('product.tablet') }}" class="link-header-item pb-1">
-                        <img src="{{ asset('images/iPad.png') }}" alt="logo" class="link-header-img" />
-                        <p class="link-header-text font-normal">Tablets</p>
-                    </a>
-
-
-                    <div id="dropdownContainer" class="relative inline-block bottom-0">
-                        <!-- Dropdown Button -->
-                        <div id="dropdownButton"
-                            class="link-header-item flex items-center gap-0 px-5 pt-2 pb-1 cursor-pointer">
-                            <img src="{{ asset('images/PCs.png') }}" alt="logo" class="link-header-img" />
-                            <p class="link-header-text font-normal">PCs</p>
-                        </div>
-
-                        <!-- Dropdown Menu -->
-                        <div id="dropdownMenu"
-                            class="absolute z-20 left-0 top-8 w-48 bg-white shadow-lg opacity-0 invisible transition-all duration-300 cursor-pointer">
-                            <div class="w-full flex justify-center items-center py-3">
-                                <a href="{{ route('product.pc') }}"
-                                    class="cate-dropdown flex flex-col justify-center items-center">
-                                    <div class="border-cate flex justify-center items-center">
-                                        <img src="{{ asset('images/pc_processed.jpg') }}" alt="logo"
-                                            class="cate-header-img" />
-                                    </div>
-                                    <p class="text-cate-header">Desktop Computers</p>
-                                </a>
-                                <a href="{{ route('product.monitor') }}"
-                                    class="cate-dropdown flex flex-col justify-center items-center ms-5">
-                                    <div class="border-cate flex justify-center items-center">
-                                        <img src="{{ asset('images/monitor_processed.jpg') }}" alt="logo"
-                                            class="cate-header-img" />
-                                    </div>
-                                    <p class="text-cate-header">Computer Monitors</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="link-header-item pb-1">
-                        <img src="{{ asset('images/Services.png') }}" alt="logo" class="link-header-img" />
-                        <p class="link-header-text font-normal">Services</p>
-                    </div>
-                    <a href="{{ route('blog.index') }}" class="link-header-item pb-1">
-                        <img src="{{ asset('images/Info.png') }}" alt="logo" class="link-header-img" />
-                        <p class="link-header-text font-normal">Blogs</p>
-                    </a>
                 </div>
 
-                <div class="link-header-item me-10 pb-1">
-                    <img src="{{ asset('images/Online Support.png') }}" alt="logo" class="link-header-img" />
-                    <p class="link-header-helpcenter font-thin">Help Center</p>
-                </div>
             </div>
 
-        </nav>
-        <div id="loader">
-            <div class="spinner"></div>
+            <!-- Sub Category Links Bar -->
+            <nav class="hidden lg:flex items-center justify-between border-t border-slate-800/70 py-2.5 text-xs font-medium text-slate-300">
+                <div class="flex items-center gap-8">
+                    <a href="{{ route('products.index', ['category' => 1]) }}" class="hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <img src="{{ asset('images/mobilephone.png') }}" width="16" height="16" alt="Mobile Phones Icon" class="w-4 h-4 object-contain opacity-80" /> Mobile Phones
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 2]) }}" class="hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <img src="{{ asset('images/Laptop.png') }}" width="16" height="16" alt="Laptops Icon" class="w-4 h-4 object-contain opacity-80" /> Laptops
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 3]) }}" class="hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <img src="{{ asset('images/Accessories.png') }}" width="16" height="16" alt="Accessories Icon" class="w-4 h-4 object-contain opacity-80" /> Accessories
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 4]) }}" class="hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <img src="{{ asset('images/iPad.png') }}" width="16" height="16" alt="Tablets Icon" class="w-4 h-4 object-contain opacity-80" /> Tablets
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 5]) }}" class="hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <img src="{{ asset('images/PCs.png') }}" width="16" height="16" alt="PCs Icon" class="w-4 h-4 object-contain opacity-80" /> PCs & Workstations
+                    </a>
+                </div>
+                <div class="flex items-center gap-4 text-slate-400">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-headset text-blue-400"></i> Online Support 24/7</span>
+                </div>
+            </nav>
         </div>
-        <main id="content" class="mt-0 w-full mx-auto">
-            @yield('content')
+    </header>
 
-
-        </main>
-
-        <footer>
-            <div class="flex flex-col justify-center items-center p-5 w-full">
-                <div class="flex flex-col justify-center items-center mt-4">
-                    <h2 class="font-bold text-xl">SUBSCRIBE TO OUR NEWSLETTER</h2>
-                    <p class="font-light text-xs">Get the latest updates on new products and upcoming sales</p>
+    <!-- Main Content Body -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Flash Notifications -->
+        @if(session('success'))
+            <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between shadow-sm animate-fade-in">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                    <span>{{ session('success') }}</span>
                 </div>
-                <div class="mt-10 mb-10">
-                    <input type="text" placeholder="Enter your email address" class="contact-footer" />
-                    <button class="contact-submit font-semibold ms-3" type="submit">SUBMIT</button>
-                </div>
-                <div class="flex flex-wrap justify-between w-11/12 row px-5">
-                    {{-- Main Footer --}}
-                    <div class="flex flex-col justify-start items-start col-3 pt-6">
-                        <h2 class="text-md font-bold">SHOP</h2>
-                        <p class="mt-4 font-light text-sm">Mobile phones</p>
-                        <p class="mt-3 font-light text-sm">Laptops</p>
-                        <p class="mt-3 font-light text-sm">PCs</p>
-                        <p class="mt-3 font-light text-sm">Accessories</p>
-                    </div>
-                    <div class="flex flex-col justify-start items-start col-3 pt-6">
-                        <h2 class="text-md font-bold">FURTHER INFO.</h2>
-                        <p class="mt-4 font-light text-sm">About</p>
-                        <p class="mt-3 font-light text-sm">Blogs</p>
-                    </div>
-                    <div class="flex flex-col justify-start items-start col-3 pt-6">
-                        <h2 class="text-md font-bold">CUSTOMER SERVICE</h2>
-                        <p class="mt-4 font-light text-sm">Orders and returns</p>
-                        <p class="mt-3 font-light text-sm">Contact us</p>
-                        <p class="mt-3 font-light text-sm"><u>Theme FAQs</u></p>
-                        <p class="mt-3 font-light text-sm">Advanced Search</p>
-
-                    </div>
-                    <div class="flex flex-col justify-start items-start col-3">
-                        <div>
-                            <img src="{{ asset('images/eltromart+_bg_grey.png') }}" class="img_footer" />
-                        </div>
-                        <div class="flex flex-wrap mt-5 ps-4">
-                            <img src="{{ asset('images/Address.png') }}" class="img_map me-3" />
-                            <span class="font-light text-sm">685 Market Street<br />San Francisco, CA 94105, US</span>
-                        </div>
-                        <div class="flex flex-wrap mt-5 ps-4">
-                            <img src="{{ asset('images/Phone.png') }}" class="img_phone me-4" />
-                            <span class="font-light text-sm">Call us at <u>(415) 555-5555</u></span>
-                        </div>
-                        <div class="flex flex-wrap mt-7 ps-4">
-                            <img src="{{ asset('images/Mail.png') }}" class="img_phone me-4" />
-                            <span class="font-light text-sm">eltromartplus@gmail.com</u></span>
-                        </div>
-                        <div class="flex flex-wrap mt-9 ps-3 mb-4">
-                            <img src="{{ asset('images/Facebook Circled.png') }}" class="img_social" />
-                            <img src="{{ asset('images/Instagram Circle.png') }}" class="img_social" />
-                            <img src="{{ asset('images/Pinterest.png') }}" class="img_social" />
-                            <img src="{{ asset('images/TwitterX.png') }}" class="img_social" />
-                        </div>
-                    </div>
-                </div>
+                <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-800"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bottom-footer w-full">
-                <div class="w-full mx-auto flex flex-wrap justify-between items-center pt-3">
-                    <!-- Text nằm bên trái -->
-                    <div class="text-start ps-10">
-                        <p class="font-light text-sm">© 2024, eltromartplus about technological equipment. All rights
-                            reserved.
-                            Website by EllaTran
-                        </p>
-                    </div>
+        @endif
 
-                    <!-- Hình ảnh nằm bên phải -->
-                    <div class="text-end">
-                        <img src="{{ asset('images/payments.png') }}" class="img_payment" />
+        @yield('content')
+    </main>
+
+    <!-- Scroll to Top Floating Button -->
+    <button id="scrollToTopBtn" aria-label="Scroll to top" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-xl flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none translate-y-4 cursor-pointer border border-blue-400/30">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-300 mt-16 border-t border-slate-800">
+        <!-- Newsletter Subscription Banner -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 border-b border-slate-800">
+            <div class="bg-gradient-to-r from-blue-900/50 via-slate-800 to-indigo-900/50 rounded-3xl p-8 md:p-10 border border-slate-700/60 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div class="space-y-2 text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-white tracking-tight">Subscribe to Our Tech Newsletter</h3>
+                    <p class="text-slate-400 text-sm">Get exclusive discounts, new product launch alerts, and tech updates.</p>
+                </div>
+                <form class="flex w-full md:w-auto max-w-md gap-3" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+                    <input type="email" required placeholder="Enter your email address..." class="input-modern bg-slate-900/90 border-slate-700 text-white placeholder-slate-500 rounded-xl" />
+                    <button type="submit" class="btn-modern-primary shrink-0 px-6">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Columns -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Column 1: Brand & Contact -->
+            <div class="space-y-4">
+                <img src="{{ asset('images/eltromart_plus_bg_grey.png') }}" alt="EltromartPlus Footer Logo" width="220" height="48" class="img_footer" onError="this.onerror=null;this.src='{{ asset('images/Logo_small.png') }}';" />
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    EltromartPlus is your leading technology destination for premium smartphones, laptops, audio gear, and electronic accessories.
+                </p>
+                <div class="space-y-2 text-xs text-slate-300">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-blue-400 w-4"></i>
+                        <span>685 Market Street, San Francisco, CA</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-blue-400 w-4"></i>
+                        <span>(415) 555-5555</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-envelope text-blue-400 w-4"></i>
+                        <span>support@eltromartplus.com</span>
                     </div>
                 </div>
             </div>
 
-        </footer>
-    </div>
+            <!-- Column 2: Quick Shop -->
+            <div class="space-y-3">
+                <h4 class="text-white font-bold text-sm tracking-wider uppercase">Shop Categories</h4>
+                <ul class="space-y-2 text-xs text-slate-400">
+                    <li><a href="{{ route('products.index', ['category' => 1]) }}" class="hover:text-blue-400 transition-colors">Mobile Phones</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 2]) }}" class="hover:text-blue-400 transition-colors">Laptops & MacBooks</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 5]) }}" class="hover:text-blue-400 transition-colors">Computers & All-in-Ones</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 6]) }}" class="hover:text-blue-400 transition-colors">Headphones & Speakers</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 3]) }}" class="hover:text-blue-400 transition-colors">Charging & Power Accessories</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Customer Care -->
+            <div class="space-y-3">
+                <h4 class="text-white font-bold text-sm tracking-wider uppercase">Customer Care</h4>
+                <ul class="space-y-2 text-xs text-slate-400">
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Track Your Order</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Shipping Policy</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Returns & Exchanges</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Warranty Information</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">FAQ & Support</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Social & Payment -->
+            <div class="space-y-4">
+                <h4 class="text-white font-bold text-sm tracking-wider uppercase">Follow Us & Payment</h4>
+                <div class="flex items-center gap-3 text-lg text-slate-300">
+                    <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" aria-label="Twitter X" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+                    <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-youtube text-xs"></i></a>
+                </div>
+                <div class="pt-2">
+                    <span class="text-xs text-slate-400 block mb-2">Accepted Payment Methods</span>
+                    <img src="{{ asset('images/payments.png') }}" alt="Accepted Payment Methods - Visa, MasterCard, PayPal" width="220" height="32" class="h-8 object-contain" />
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Copyright -->
+        <div class="bg-slate-950 py-4 border-t border-slate-800 text-center text-xs text-slate-500">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <p>&copy; {{ date('Y') }} EltromartPlus Technological Equipment. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
-
 </html>
 
 

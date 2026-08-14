@@ -1,201 +1,162 @@
 @extends('layouts.app')
+
+@section('title', 'EltromartPlus - Premium Technological Equipment Store')
+@section('meta_description', 'Discover flagship smartphones, powerful workstations, laptops, high-performance audio gear, and electronic accessories with 24/7 support and fast delivery.')
+
 @section('content')
-    <div class="w-full flex flex-col justify-center items-center">
-        {{-- Caurosel --}}
-        <div class="w-full">
-            <div x-data="carousel({
-                slides: [{
-                        imgSrc: '{{ asset('images/sub_sildeshow.png') }}',
-                        imgAlt: 'Vibrant abstract painting with swirling blue and light pink hues on a canvas.',
-                        title: 'New Collection for Black Friday',
-                        description: 'The architects of the digital world, constantly battling against their mortal enemy – browser compatibility.',
-                        button: 'Shop Now',
-                        link: '#',
-                    },
-                    {
-                        imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-2.webp',
-                        imgAlt: 'Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.',
-                        title: 'Back end developers',
-                        description: 'Because not all superheroes wear capes, some wear headphones and stare at terminal screens',
-                    },
-                    {
-                        imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-3.webp',
-                        imgAlt: 'Vibrant abstract painting with swirling blue and purple hues on a canvas.',
-                        title: 'Full stack developers',
-                        description: 'Where &quot;burnout&quot; is just a fancy term for &quot;Tuesday&quot;.'
-                    },
-                ],
-            })" class="relative w-full overflow-hidden">
+<div class="space-y-14 pb-8">
 
-                <!-- previous button -->
-                <button type="button"
-                    class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-neutral-600 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:outline-offset-0 dark:bg-neutral-950/40 dark:text-neutral-300 dark:hover:bg-neutral-950/60 dark:focus-visible:outline-white"
-                    aria-label="previous slide" x-on:click="previous()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none"
-                        stroke-width="3" class="size-5 md:size-6 pr-0.5" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                </button>
+    <!-- 1. Hero Slider Section (LCP Prioritized Main Banner) -->
+    <div class="hero-animate relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-800">
+        <div x-data="{
+            currentSlide: 0,
+            slides: [
+                {
+                    title: 'Next-Gen Mobile Technologies',
+                    subtitle: 'Unmatched performance with 5G connectivity & titanium precision.',
+                    image: '{{ asset('images/sub_sildeshow.png') }}',
+                    cta: 'Explore Flagship Phones',
+                    link: '{{ route('products.index', ['category' => 1]) }}'
+                },
+                {
+                    title: 'Ultra-Powerful Workstations',
+                    subtitle: 'Boost your workflow with high-performance laptops and PCs.',
+                    image: '{{ asset('images/slideshow3.jpg') }}',
+                    cta: 'View Laptops',
+                    link: '{{ route('products.index', ['category' => 2]) }}'
+                },
+                {
+                    title: 'Premium Audio & Accessories',
+                    subtitle: 'Immerse yourself in crystal clear noise-canceling sound.',
+                    image: '{{ asset('images/slideshow1.jpg') }}',
+                    cta: 'Shop Accessories',
+                    link: '{{ route('products.index', ['category' => 3]) }}'
+                }
+            ],
+            next() { this.currentSlide = (this.currentSlide + 1) % this.slides.length; },
+            prev() { this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length; }
+        }" class="relative h-[380px] sm:h-[460px] md:h-[520px] w-full">
 
-                <!-- next button -->
-                <button type="button"
-                    class="absolute right-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-neutral-600 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:outline-offset-0 dark:bg-neutral-950/40 dark:text-neutral-300 dark:hover:bg-neutral-950/60 dark:focus-visible:outline-white"
-                    aria-label="next slide" x-on:click="next()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none"
-                        stroke-width="3" class="size-5 md:size-6 pl-0.5" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                </button>
+            <!-- Slides Template -->
+            <template x-for="(slide, index) in slides" :key="index">
+                <div x-show="currentSlide === index"
+                     x-transition:enter="transition ease-out duration-700"
+                     x-transition:enter-start="opacity-0 scale-105"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-500"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     class="absolute inset-0 w-full h-full">
 
-                <!-- slides -->
-                <!-- Change min-h-[50svh] to your preferred height size -->
-                <div class="relative min-h-[70svh] w-full">
-                    <template x-for="(slide, index) in slides">
-                        <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0"
-                            x-transition.opacity.duration.1000ms>
-
-                            <!-- Title and description -->
-                            <div
-                                class="lg:px-20 lg:py-14 absolute inset-0 z-10 flex flex-col items-start justify-end gap-2 to-transparent px-16 py-12 text-center">
-                                {{-- <h3 class="w-full lg:w-[80%] text-balance text-2xl lg:text-3xl font-bold text-white"
-                                x-text="slide.title" x-bind:aria-describedby="'slide' + (index + 1) + 'Description'"></h3> --}}
-                                {{-- <p class="lg:w-1/2 w-full text-pretty text-sm text-neutral-300" x-text="slide.description"
-                                x-bind:id="'slide' + (index + 1) + 'Description'"></p> --}}
-                                <a href="slide.link" x-text='slide.button' class="button-caurosel"></a>
+                    <img :src="slide.image" :alt="slide.title" fetchpriority="high" loading="eager" width="1200" height="520" class="w-full h-full object-cover object-center opacity-40" onError="this.onerror=null;this.src='{{ asset('images/sub_sildeshow.png') }}';" />
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent flex items-center p-8 sm:p-12 md:p-16">
+                        <div class="max-w-xl space-y-4">
+                            <span class="inline-block px-3 py-1 bg-blue-600/90 text-white font-bold text-xs rounded-full uppercase tracking-wider shadow-sm">
+                                Exclusive Summer Deals
+                            </span>
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-md" x-text="slide.title"></h1>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed" x-text="slide.subtitle"></p>
+                            <div class="pt-2">
+                                <a :href="slide.link" class="btn-modern-primary text-base py-3 px-8 rounded-2xl">
+                                    <span x-text="slide.cta"></span>
+                                    <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                                </a>
                             </div>
-
-                            <img class="absolute w-full h-full inset-0 object-cover text-neutral-600 dark:text-neutral-300"
-                                x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt" />
                         </div>
-                    </template>
+                    </div>
                 </div>
+            </template>
 
-                <!-- indicators -->
-                <div class="absolute rounded-md bottom-3 md:bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-4 md:gap-3 px-1.5 py-1 md:px-2"
-                    role="group" aria-label="slides">
-                    <template x-for="(slide, index) in slides">
-                        <button class="size-2 cursor-pointer rounded-full transition"
-                            x-on:click="currentSlideIndex = index + 1"
-                            x-bind:class="[currentSlideIndex === index + 1 ? 'bg-neutral-300' : 'bg-neutral-300/50']"
-                            x-bind:aria-label="'slide ' + (index + 1)"></button>
-                    </template>
+            <!-- Slide Controls -->
+            <button @click="prev()" aria-label="Previous Slide" class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button @click="next()" aria-label="Next Slide" class="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-blue-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <!-- Indicators -->
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                <template x-for="(slide, index) in slides" :key="index">
+                    <button @click="currentSlide = index" aria-label="Go to slide" class="w-3 h-3 rounded-full transition-all cursor-pointer" :class="currentSlide === index ? 'bg-blue-500 w-8' : 'bg-white/40'"></button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Propositions Banner -->
+    <div class="gsap-reveal grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-truck-fast text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-800 text-base">Free Shipping & Returns</h4>
+                <p class="text-xs text-slate-500">Free delivery on orders over $200</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-shield-halved text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-800 text-base">Lowest Price Guarantee</h4>
+                <p class="text-xs text-slate-500">Match price assurance on all tech items</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-award text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-800 text-base">Extended Warranty</h4>
+                <p class="text-xs text-slate-500">Up to 24 months manufacturer warranty</p>
+            </div>
+        </div>
+    </div>
+
+    @php
+        // Database queries optimized with eager loading and explicit limits
+        $flashProducts = \App\Models\Products::with(['category', 'brand'])->where('sale_price', '>', 0)->take(4)->get();
+        if ($flashProducts->isEmpty()) {
+            $flashProducts = \App\Models\Products::with(['category', 'brand'])->take(4)->get();
+        }
+
+        $featuredProducts = \App\Models\Products::with(['category', 'brand'])->skip(4)->take(8)->get();
+        if ($featuredProducts->isEmpty()) {
+            $featuredProducts = \App\Models\Products::with(['category', 'brand'])->take(8)->get();
+        }
+
+        $categories = \App\Models\Categories::where('status', 1)->get();
+        $brands = \App\Models\Brands::where('status', 1)->get();
+
+        $categoryMeta = [
+            1 => ['img' => 'mobilephone.png', 'gradient' => 'from-blue-600 to-indigo-700', 'shadow' => 'shadow-blue-500/25'],
+            2 => ['img' => 'Laptop.png', 'gradient' => 'from-slate-800 to-slate-950', 'shadow' => 'shadow-slate-900/25'],
+            3 => ['img' => 'Accessories.png', 'gradient' => 'from-indigo-600 to-purple-700', 'shadow' => 'shadow-indigo-500/25'],
+            4 => ['img' => 'iPad.png', 'gradient' => 'from-emerald-600 to-teal-700', 'shadow' => 'shadow-emerald-500/25'],
+            5 => ['img' => 'PCs.png', 'gradient' => 'from-blue-900 to-slate-900', 'shadow' => 'shadow-blue-900/25'],
+            6 => ['img' => 'Services.png', 'gradient' => 'from-rose-600 to-pink-700', 'shadow' => 'shadow-rose-500/25'],
+        ];
+    @endphp
+
+    <!-- 2. Flash Sales Section -->
+    <div class="gsap-reveal space-y-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/25">
+                    <i class="fa-solid fa-bolt text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">FLASH SALES</h2>
+                    <p class="text-xs text-slate-500">Limited time offers with massive discounts</p>
                 </div>
             </div>
-        </div>
-
-        {{-- Utilities --}}
-        <div class="w-4/5 mt-3 mb-5 flex flex-wrap justify-between items-center ulities">
-            <div class="flex items-center justify-center">
-                <img src="{{ asset('images/FreeShipping.png') }}" alt="freeship" class="ulities_img" />
-                <p class="ulities_text">Free Shipping & Returns</p>
-            </div>
-            <div class="flex items-center item-unilitie">
-                <img src="{{ asset('images/Diploma.png') }}" alt="freeship" class="ulities_img" />
-                <p class="ulities_text">Lowest Price Guarante</p>
-            </div>
-            <div class="flex items-center item-unilitie">
-                <img src="{{ asset('images/Man Winner.png') }}" alt="freeship" class="ulities_img" />
-                <p class="ulities_text">Longest Warranties Offer</p>
-            </div>
-        </div>
-
-    </div>
-    {{-- Flash Sale --}}
-    <div class="w-full px-14 mb-5">
-
-        <div class=" flex-col justify-start items-start">
-            <div class="title-sales font">FLASH SALES</div>
-            <div class="flex justify-center items-center">
-                <ul id="autoplay" class="cs-hidden">
-                    {{-- 1. --}}
-                    @foreach ($saleProducts as $s)
-                        <li class="item-a">
-                            <div class="mt-5 me-3">
-
-                                <div class="flex flex-col justify-center items-center item-product">
-                                    <div class="overplay flex flex-col justify-center items-center">
-                                        <a href="{{ route('product.detail', ['id' => $s->id]) }}" class="btn-buy2">View
-                                            Details</a>
-
-                                        <a href="#" class="btn-buy1 mt-2">Add to Cart</a>
-                                    </div>
-                                    <img src="{{ asset('images/productimg_rbg/' . $s->product_img) }}" alt="sp1"
-                                        class="img-product" />
-                                    <div class="text-start font-medium mt-5">
-                                        <p class="text-start name-product">{{ $s->product_name }}</p>
-                                        <p class="mt-3 text-sm">
-                                            <span class="regular-price">
-                                                <s class="reg_price font-normal">${{ $s->regular_price }}</s> to
-                                            </span>
-                                            <strong class="text-price">${{ $s->sale_price }}</strong>
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-
-                </ul>
-
-            </div>
-        </div>
-    </div>
-
-    {{-- Top Categories --}}
-    <div class="flex flex-col mt-12 mb-10">
-        <div class="text-center">
-            <h2 class="title-sales font">TOP CATEGORIES</h2>
-        </div>
-        <div class="flex justify-end items-end pe-10 mt-3 mb-2">
-            <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                class="moreicon ms-1" />
-        </div>
-        <div class="flex justify-center items-center flex-wrap">
-            @foreach ($categories as $category)
-                <a href="{{ route('product.' . $category->slug) }}"
-                    class="w-cate item-cate flex flex-col justify-center items-center me-5 mb-5 mt-3">
-                    <img src="{{ asset('images/' . $category->cate_img) }}" alt="cate1" class="img-cate" />
-
-
-                    <p class="text-xs font-medium  name-product mt-2">{{ $category->cate_name }}</p>
-                </a>
-            @endforeach
-
-
-        </div>
-    </div>
-
-    {{-- NEW PRODUCTS --}}
-    <div class="w-full ps-14 mt-10 mb-8 pe-10">
-        <div class="flex-col justify-start items-start">
-            <div class="text-lg font-bold">NEW PRODUCTS</div>
-            <div class="flex justify-end items-end mb-2">
-                <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                    class="moreicon ms-1" />
-            </div>
-            <div class="flex flex-wrap justify-between items-center px-10">
-                @foreach ($newProduct as $n)
-                    <div class=" me-3">
-                        <div class="flex flex-col justify-center items-center item-newproduct">
-                            <img src="{{ asset('images/productimg_rbg/' . $n->product_img) }}" alt="sp1"
-                                class="img-newproduct" />
-                            <div class="text-start font-medium mt-5">
-                                <p class="text-start  name-product">{{ $n->product_name }}</p>
-                                <p class="mt-3 text-sm text-center"><span class="regular-price">
-                                        @if ($n->sale_price == null)
-                                            <strong class="text-price">${{ $n->regular_price }}</strong>
-                                        @else
-                                            <s class="reg_price font-normal">${{ $n->regular_price }}</s> to
-                                    </span><strong class="text-price">${{ $n->sale_price }}</strong>
-                @endif
-                </p>
-
-            </div>
-            <div class="flex justify-between items-center mt-5 mb-2">
-                <button class="btn-choose-product">Choose Options</button>
-                <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-            </div>
+            <a href="{{ route('products.index') }}" class="btn-modern-outline text-xs py-2 px-4">
+                View All Deals <i class="fa-solid fa-arrow-right ml-1"></i>
+            </a>
         </div>
     </div>
     @endforeach
@@ -204,268 +165,102 @@
     </div>
     </div>
 
-    </div>
-
-    {{-- Some Quality --}}
-    <div class="w-full quality mb-10  flex flex-wrap justify-center items-center pb-5">
-        <div class="flex flex-wrap justify-center items-center ">
-            <div class="mt-4 me-5 px-5 pt-12 pb-16 flex flex-col justify-center items-center bg-white item-quality">
-                <img src="{{ asset('images/StarHalfempty.png') }}" class="img-quality" />
-                <h2 class="font-bold mt-5">QUALITY AND SAVING</h2>
-                <p class="font-light text-sm mt-5 text-center">Comprehensive quality control and affordable prices</p>
-            </div>
-            <div class="mt-4 me-5 px-5 pt-12 pb-16 flex flex-col justify-center items-center bg-white item-quality">
-                <img src="{{ asset('images/In Transit.png') }}" class="img-quality" />
-                <h2 class="font-bold mt-5">FAST SHIPPING</h2>
-                <p class="font-light text-sm mt-5 text-center">Fast and convenient door to door delivery</p>
-            </div>
-            <div class="mt-4 me-5 px-5 pt-12 pb-16 flex flex-col justify-center items-center bg-white item-quality">
-                <img src="{{ asset('images/Protect.png') }}" class="img-quality" />
-                <h2 class="font-bold mt-5">PAYMENT SECURITY</h2>
-                <p class="font-light text-sm mt-5 text-center">More than 10 different secure payment methods</p>
-            </div>
-            <div class="mt-4  px-5 pt-12 pb-16 flex flex-col justify-center items-center bg-white item-quality">
-                <img src="{{ asset('images/Ask_Question.png') }}" class="img-quality" />
-                <h2 class="font-bold mt-5">HAVE A QUESTION?</h2>
-                <p class="font-light text-sm mt-5 text-center">24/7 Customer Service - We're here and happy to help!</p>
-            </div>
-        </div>
-    </div>
-    {{-- Top Mobile Phones --}}
-    <div class="w-full ps-14 mt-10 mb-8 pe-10">
-        <div class="flex-col justify-start items-start">
-            <div class="text-lg font-bold">TOP MOBILE PHONES</div>
-            <div class="flex justify-end items-end mb-2">
-                <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                    class="moreicon ms-1" />
-            </div>
-            <div class="flex flex-wrap justify-between items-center px-10">
-                @foreach ($topMobile as $t)
-                    <div class="me-3">
-                        <div class="flex flex-col justify-center items-center item-newproduct">
-                            <img src="{{ asset('images/productimg_rbg/' . $t->product_img) }}" alt="sp1"
-                                class="img-newproduct" />
-                            <div class="text-start font-medium mt-5">
-                                <p class="text-start  name-product">{{ $t->product_name }}</p>
-                                <p class="mt-3 text-sm"><span class="regular-price""><s
-                                            class="reg_price font-normal">${{ $t->regular_price }}</s> to </span><strong
-                                        class="text-price">${{ $t->sale_price }}</strong></p>
-                            </div>
-                            <div class="flex justify-between items-center mt-5 mb-2">
-                                <button class="btn-choose-product">Choose Options</button>
-                                <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-
-
-            </div>
-        </div>
-
-    </div>
-
-    {{-- Top Laptops --}}
-    <div class="w-full ps-14 mt-10 mb-10 pe-10">
-        <div class="flex-col justify-start items-start">
-            <div class="text-lg font-bold">TOP LAPTOPS</div>
-            <div class="flex justify-end items-end mb-2">
-                <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                    class="moreicon ms-1" />
-            </div>
-            <div class="flex flex-wrap justify-between items-center px-10">
-                @foreach ($topLaptop as $l)
-                    <div class="me-3">
-                        <div class="flex flex-col justify-center items-center item-newproduct">
-                            <img src="{{ asset('images/productimg_rbg/' . $l->product_img) }}" alt="sp1"
-                                class="img-newproduct" />
-                            <div class="text-start font-medium mt-5">
-                                <p class="text-start  name-product">{{ $l->product_name }}</p>
-                                <p class="mt-3 text-sm"><span class="regular-price""><s
-                                            class="reg_price font-normal">${{ $l->regular_price }}</s> to </span><strong
-                                        class="text-price">${{ $l->sale_price }}</strong></p>
-                            </div>
-                            <div class="flex justify-between items-center mt-5 mb-2">
-                                <button class="btn-choose-product">Choose Options</button>
-                                <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-
-
-            </div>
-        </div>
-
-
-    </div>
-    {{-- FEATURED PRDUCTS --}}
-    <div class="w-full flex flex-col mt-10 mb-10">
-        <div class="text-center">
-            <h2 class="font-bold text-lg">FEATURED PRODUCTS</h2>
-        </div>
-        <div class="flex justify-end items-end pe-10 mt-3 mb-2">
-            <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                class="moreicon ms-1" />
-        </div>
-        <div class="flex flex-wrap justify-between items-center px-10">
-            <div class="me-3">
-                <div class="flex flex-col justify-center items-center item-newproduct">
-                    <img src="{{ asset('images/laptop1.png') }}" alt="sp1" class="img-newproduct" />
-                    <div class="text-start font-medium mt-5">
-                        <p class="text-start  name-product">Computer Mac and Assoccities</p>
-                        <p class="mt-3 text-sm"><span class="regular-price""><s class="reg_price font-normal">$199.99</s>
-                                to </span><strong class="text-price">$179.99</strong></p>
-                    </div>
-                    <div class="flex justify-between items-center mt-5 mb-2">
-                        <button class="btn-choose-product">Choose Options</button>
-                        <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                    </div>
-                </div>
-            </div>
-            <div class="me-3">
-                <div class="flex flex-col justify-center items-center item-newproduct">
-                    <img src="{{ asset('images/laptop1.png') }}" alt="sp1" class="img-newproduct" />
-                    <div class="text-start font-medium mt-5">
-                        <p class="text-start  name-product">Computer Mac and Assoccities</p>
-                        <p class="mt-3 text-sm"><span class="regular-price""><s class="reg_price font-normal">$199.99</s>
-                                to </span><strong class="text-price">$179.99</strong></p>
-                    </div>
-                    <div class="flex justify-between items-center mt-5 mb-2">
-                        <button class="btn-choose-product">Choose Options</button>
-                        <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                    </div>
-                </div>
-            </div>
-            <div class="me-3">
-                <div class="flex flex-col justify-center items-center item-newproduct">
-                    <img src="{{ asset('images/laptop1.png') }}" alt="sp1" class="img-newproduct" />
-                    <div class="text-start font-medium mt-5">
-                        <p class="text-start  name-product">Computer Mac and Assoccities</p>
-                        <p class="mt-3 text-sm"><span class="regular-price""><s class="reg_price font-normal">$199.99</s>
-                                to </span><strong class="text-price">$179.99</strong></p>
-                    </div>
-                    <div class="flex justify-between items-center mt-5 mb-2">
-                        <button class="btn-choose-product">Choose Options</button>
-                        <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                    </div>
-                </div>
-            </div>
-            <div class="me-3">
-                <div class="flex flex-col justify-center items-center item-newproduct">
-                    <img src="{{ asset('images/laptop1.png') }}" alt="sp1" class="img-newproduct" />
-                    <div class="text-start font-medium mt-5">
-                        <p class="text-start  name-product">Computer Mac and Assoccities</p>
-                        <p class="mt-3 text-sm"><span class="regular-price""><s class="reg_price font-normal">$199.99</s>
-                                to </span><strong class="text-price">$179.99</strong></p>
-                    </div>
-                    <div class="flex justify-between items-center mt-5 mb-2">
-                        <button class="btn-choose-product">Choose Options</button>
-                        <img src="{{ asset('images/Favorite.png') }}" alt="addwish" class="iconheart" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- TOP BRANDS --}}
-    <div class="w-full flex flex-col mt-10 mb-10 justify-center">
-        <div class="text-center mt-5">
-            <h2 class="font-bold text-lg">TOP BRANDS</h2>
-        </div>
-        <div class="flex justify-end items-end pe-10 mt-1 mb-2">
-            <u class="text-base font-light">More </u><img src="{{ asset('images/Right.png') }}" alt="more"
-                class="moreicon ms-1" />
-        </div>
-        <div class="w-11/12 flex justify-between items-center ps-10">
-            @foreach ($brands as $brand)
-                <div class="w-cate item-cate flex flex-col justify-center items-center me-5 mb-5 mt-1">
-                    <img src="{{ asset('images/' . $brand->brand_img) }}" alt="logobrand1" class="logo_brand" />
-                </div>
+        <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($flashProducts as $prod)
+                <x-product-card :product="$prod" />
             @endforeach
-
-
         </div>
     </div>
-    {{-- SCRIPTS --}}
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('carousel', (carouselData = {
-                slides: [],
-            }, ) => ({
-                slides: carouselData.slides,
-                currentSlideIndex: 1,
-                previous() {
-                    if (this.currentSlideIndex > 1) {
-                        this.currentSlideIndex = this.currentSlideIndex - 1
-                    } else {
-                        // If it's the first slide, go to the last slide
-                        this.currentSlideIndex = this.slides.length
-                    }
-                },
-                next() {
-                    if (this.currentSlideIndex < this.slides.length) {
-                        this.currentSlideIndex = this.currentSlideIndex + 1
-                    } else {
-                        // If it's the last slide, go to the first slide
-                        this.currentSlideIndex = 1
-                    }
-                },
-            }));
-        });
-        $(document).ready(function() {
-            var autoplaySlider = $('#autoplay').lightSlider({
-                auto: true,
-                loop: true,
-                pauseOnHover: true,
-                item: 4,
-                responsive: [{
-                        breakpoint: 1500, // Nếu màn hình nhỏ hơn 768px
-                        settings: {
-                            item: 3 // Chỉ hiển thị 2 phần tử
-                        }
-                    }, {
-                        breakpoint: 1100, // Nếu màn hình nhỏ hơn 768px
-                        settings: {
-                            item: 2 // Chỉ hiển thị 2 phần tử
-                        }
-                    },
-                    {
-                        breakpoint: 755, // Nếu màn hình nhỏ hơn 480px
-                        settings: {
-                            item: 1 // Chỉ hiển thị 1 phần tử
-                        }
-                    }
-                ],
-                speed: 1000, // Thời gian chuyển slide (1 giây)
-                pause: 3000,
-                controls: true,
-                pager: false,
-                onBeforeSlide: function(el) {
-                    $('#current').text(el.getCurrentSlideCount());
-                }
-            });
-            $('#total').text(autoplaySlider.getTotalSlideCount());
 
-            // Chỉnh sửa màu sắc khi hover trên các nút prev và next
-            $('.lSPrev, .lSNext').hover(
-                function() {
-                    $(this).css({
-                        'background-color': '#9b9ea2', // Màu nền khi hover
-                        'border-radius': "20px",
-                        'padding': '10px',
-                        'color': 'white' // Màu chữ khi hover
-                    });
-                },
-                function() {
-                    $(this).css({
+    <!-- 3. Shop by Category Section (Pastel Blue Style) -->
+    <div class="gsap-reveal space-y-6">
+        <div class="text-center max-w-xl mx-auto space-y-2">
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Shop by Category</h2>
+            <p class="text-slate-500 text-sm">Find top technology equipment across our curated catalog.</p>
+        </div>
 
-                        'color': 'white' // Màu chữ mặc định
-                    });
-                }
-            );
-        });
-    </script>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            @if(isset($categories) && count($categories) > 0)
+                @php
+                    $categoryImg = [
+                        1 => 'mobilephone.png',
+                        2 => 'Laptop.png',
+                        3 => 'Accessories.png',
+                        4 => 'iPad.png',
+                        5 => 'PCs.png',
+                        6 => 'Services.png',
+                    ];
+                @endphp
+                @foreach($categories as $cat)
+                    @php
+                        $img = $categoryImg[$cat->id] ?? 'mobilephone.png';
+                    @endphp
+                    <a href="{{ route('products.index', ['category' => $cat->id]) }}"
+                       class="group flex flex-col items-center justify-center gap-3 p-6 rounded-3xl bg-blue-50 ring-1 ring-blue-100 hover:ring-2 hover:ring-blue-300 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-300 aspect-square">
 
+                        <div class="w-16 h-16 rounded-2xl bg-blue-500 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+                            <img src="{{ asset('images/' . $img) }}" alt="{{ $cat->cate_name }}" width="34" height="34" loading="lazy" class="w-8 h-8 object-contain" style="filter: brightness(0) invert(1);" onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
+                        </div>
 
-    @stack('scripts')
+                        <span class="font-bold text-blue-600 group-hover:text-blue-700 text-sm text-center leading-tight transition-colors duration-300">{{ $cat->cate_name }}</span>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+    </div>
+
+    <!-- 4. Featured / New Products Section -->
+    <div class="gsap-reveal space-y-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/25">
+                    <i class="fa-solid fa-fire text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">FEATURED & NEW ARRIVALS</h2>
+                    <p class="text-xs text-slate-500">Discover our newest technological arrivals and top sellers</p>
+                </div>
+            </div>
+            <a href="{{ route('products.index') }}" class="btn-modern-outline text-xs py-2 px-4">
+                Explore Full Catalog <i class="fa-solid fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+
+        <div class="product-grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($featuredProducts as $prod)
+                <x-product-card :product="$prod" />
+            @endforeach
+        </div>
+    </div>
+
+    <!-- 5. Featured Brands Showcase Section -->
+    <div class="gsap-reveal bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6">
+        <h3 class="text-center text-xs font-bold uppercase tracking-widest text-slate-400">Featured Technology Brands</h3>
+        <div class="flex flex-wrap items-center justify-around gap-6 opacity-80 grayscale hover:grayscale-0 transition-all">
+            <img src="{{ asset('images/AppleLogo.jpg') }}" alt="Apple Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/Samsung-Logo-06.jpg') }}" alt="Samsung Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/DellLogo.jpg') }}" alt="Dell Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/LogoAsus.jpg') }}" alt="Asus Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/XiaomiLogo.jpg') }}" alt="Xiaomi Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+            <img src="{{ asset('images/LevonoLogo.jpg') }}" alt="Lenovo Brand Logo" width="100" height="40" loading="lazy" class="h-10 object-contain hover:scale-110 transition-transform" onError="this.style.display='none'" />
+        </div>
+    </div>
+
+    <!-- 6. Promotional / CTA Section -->
+    <div class="gsap-reveal bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-slate-800">
+        <div class="space-y-4 max-w-xl text-center md:text-left">
+            <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-xs rounded-full uppercase tracking-wider">
+                Special Upgrade Promotion
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Upgrade Your Tech Gear Today</h2>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                Get up to 24 months warranty, free express delivery, and instant trade-in discounts on all premium smartphones, laptops, and audio gear.
+            </p>
+        </div>
+        <a href="{{ route('products.index') }}" class="btn-modern-primary text-base py-4 px-8 rounded-2xl shrink-0 shadow-xl shadow-blue-500/20">
+            Shop All Products Now <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+        </a>
+    </div>
+
+</div>
 @endsection
