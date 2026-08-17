@@ -31,6 +31,9 @@
 
 <body class="font-sans antialiased text-slate-800 bg-slate-50 flex flex-col min-h-screen relative">
 
+    <!-- Top Smooth Progress Loading Bar -->
+    <div id="page-progress-bar" class="page-loading-bar"></div>
+
     <!-- Top announcement bar: full-width edge-to-edge, responsive without border radius -->
     <div class="w-full bg-blue-600 text-white text-xs py-2.5 px-4 shadow-sm border-b border-blue-700 font-medium tracking-wide">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-4 text-center sm:text-left">
@@ -55,7 +58,7 @@
                     <img src="{{ asset('images/eltromart_plus.png') }}"
                          alt="EltromartPlus Technological Equipment Store"
                          width="220" height="46"
-                         class="h-9 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                         class="h-9 sm:h-11 w-auto object-contain rounded-3xl transition-transform duration-300 group-hover:scale-105"
                          onError="this.onerror=null;this.src='{{ asset('images/Logo_small.png') }}';" />
                 </a>
 
@@ -275,7 +278,7 @@
         <!-- Multi-column footer links -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div class="space-y-4 text-center sm:text-left">
-                <img src="{{ asset('images/eltromart_plus.png') }}" width="180" height="38" alt="EltromartPlus Logo" class="mx-auto sm:mx-0 h-9 w-auto" />
+                <img src="{{ asset('images/eltromart_plus.png') }}" width="180" height="38" alt="EltromartPlus Logo" class="mx-auto sm:mx-0 h-9 w-auto rounded-3xl" />
                 <p class="text-xs text-slate-400 leading-relaxed">
                     EltromartPlus is your premier destination for high-end smartphones, computers, workstations, and high-fidelity audio equipment.
                 </p>
@@ -343,5 +346,31 @@
     </footer>
 
     @yield('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bar = document.getElementById('page-progress-bar');
+            if (bar) {
+                bar.classList.add('complete');
+            }
+            
+            // Trigger smooth progress bar on navigation & form submits
+            window.addEventListener('beforeunload', function() {
+                if (bar) {
+                    bar.classList.remove('complete');
+                    bar.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function() {
+                    if (bar) {
+                        bar.classList.remove('complete');
+                        bar.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
