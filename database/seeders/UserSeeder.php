@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'id' => 1,
                 'firstname' => 'John',
                 'lastname' => 'Doe',
                 'avatar' => 'James.jpg',
@@ -23,6 +24,7 @@ class UserSeeder extends Seeder
                 'utype' => 'ADM',
             ],
             [
+                'id' => 2,
                 'firstname' => 'Mary',
                 'lastname' => 'Jean',
                 'avatar' => 'James.jpg',
@@ -32,6 +34,7 @@ class UserSeeder extends Seeder
                 'utype' => 'USR',
             ],
             [
+                'id' => 3,
                 'firstname' => 'Vena',
                 'lastname' => 'Mark N.',
                 'avatar' => 'James.jpg',
@@ -41,6 +44,7 @@ class UserSeeder extends Seeder
                 'utype' => 'USR',
             ],
             [
+                'id' => 4,
                 'firstname' => 'Enderle',
                 'lastname' => 'Rob',
                 'avatar' => 'James.jpg',
@@ -53,7 +57,7 @@ class UserSeeder extends Seeder
 
         foreach ($users as $user) {
             DB::table('users')->updateOrInsert(
-                ['email' => $user['email']],
+                ['id' => $user['id']],
                 $user
             );
         }

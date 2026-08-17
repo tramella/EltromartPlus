@@ -11,14 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Execute seeders for categories, brands, colors, products, blogs, and demo users
+        // Execute UserSeeder first so foreign key constraints in BlogSeeder are satisfied
         $this->call([
+            UserSeeder::class,
             CategoriesTableSeeder::class,
             BrandsTableSeeder::class,
             ColorsTableSeeder::class,
             ProductsTableSeeder::class,
             BlogSeeder::class,
-            UserSeeder::class,
         ]);
     }
 }
