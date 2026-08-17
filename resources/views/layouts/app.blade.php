@@ -52,14 +52,17 @@
 
 <body class="font-sans antialiased text-slate-800 bg-slate-50 flex flex-col min-h-screen relative">
 
-    <!-- Top announcement bar: shipping and support info -->
-    <div class="bg-blue-600 text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex justify-between items-center max-w-7xl mx-auto w-full rounded-b-xl shadow-sm">
-        <div class="hidden md:flex items-center gap-2">
-            <i class="fa-solid fa-truck-fast"></i>
-            <span>Free Express Shipping on Orders Over $200!</span>
-        </div>
-        <div class="mx-auto md:mx-0 flex items-center gap-4">
-            <span>24/7 Customer Support: <strong class="font-semibold text-yellow-300">(+84) 456 787</strong></span>
+    <!-- Top announcement bar: full-width edge-to-edge, responsive without border radius -->
+    <div class="w-full bg-blue-600 text-white text-xs py-2.5 px-4 shadow-sm border-b border-blue-700 font-medium tracking-wide">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-truck-fast text-yellow-300"></i>
+                <span>Free Express Shipping on Orders Over $200!</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-headset text-yellow-300"></i>
+                <span>24/7 Customer Support: <strong class="font-semibold text-yellow-300 font-mono text-xs">(+84) 456 787</strong></span>
+            </div>
         </div>
     </div>
 

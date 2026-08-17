@@ -4,7 +4,7 @@
 @section('meta_description', 'Explore our comprehensive tech catalog featuring smartphones, laptops, workstations, headsets, power banks, and accessories with fast delivery.')
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-8" x-data="{ filterOpen: false }">
 
     <!-- Page Header & Search Bar -->
     <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
@@ -21,11 +21,30 @@
         </form>
     </div>
 
+    <!-- Mobile Filter Trigger Button (Visible only on mobile/tablet screen sizes) -->
+    <div class="lg:hidden">
+        <button @click="filterOpen = true" type="button" class="w-full flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-800 text-sm shadow-sm hover:bg-slate-50 transition-colors cursor-pointer">
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-blue-600"></i>
+                <span>Filter Catalog</span>
+            </span>
+            @if(request()->hasAny(['category', 'brand', 'search']))
+                <span class="text-xs bg-blue-100 text-blue-700 font-extrabold px-2.5 py-1 rounded-full">
+                    Active Filters
+                </span>
+            @else
+                <span class="text-xs bg-slate-100 text-slate-500 font-semibold px-2.5 py-1 rounded-full">
+                    Tap to open
+                </span>
+            @endif
+        </button>
+    </div>
+
     <!-- Main Content Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         
-        <!-- Sidebar Filters -->
-        <aside class="space-y-6">
+        <!-- Desktop Sidebar Filters (Hidden on mobile) -->
+        <aside class="hidden lg:block space-y-6">
             <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-6">
                 <h2 class="font-bold text-slate-900 text-base flex items-center gap-2 border-b border-slate-100 pb-3">
                     <i class="fa-solid fa-filter text-blue-600"></i> Catalog Filters
@@ -82,7 +101,7 @@
                     @endforeach
                 </div>
 
-                <!-- Redesigned Custom Laravel Pagination -->
+                <!-- Custom Pagination with Ellipsis (...) for > 4 pages -->
                 <div class="pt-6">
                     {{ $products->links('vendor.pagination.tailwind') }}
                 </div>
@@ -101,5 +120,92 @@
         </main>
 
     </div>
+
+    <!-- Mobile Filter Slide-Over Modal Component -->
+    <div x-show="filterOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto lg:hidden" 
+         style="display: none;">
+        
+        <!-- Backdrop Overlay -->
+        <div @click="filterOpen = false" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"></div>
+
+        <!-- Modal Dialog Container -->
+        <div class="relative min-h-screen flex items-end sm:items-center justify-center p-4">
+            <div x-show="filterOpen"
+                 x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="translate-y-full sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="translate-y-0 sm:scale-100"
+                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave-start="translate-y-0 sm:scale-100"
+                 x-transition:leave-end="translate-y-full sm:translate-y-0 sm:scale-95"
+                 class="relative w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl space-y-6 max-h-[85vh] overflow-y-auto z-10 border border-slate-100">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-blue-600 text-lg"></i>
+                        <h3 class="font-extrabold text-slate-900 text-lg">Filter Products</h3>
+                    </div>
+                    <button @click="filterOpen = false" type="button" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer" aria-label="Close modal">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Categories List -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Categories</h4>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-medium">
+                        <a href="{{ route('products.index') }}" @click="filterOpen = false" class="p-3 rounded-xl border text-center transition-colors {{ !request('category') ? 'bg-blue-600 text-white border-blue-600 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100' }}">
+                            All Categories
+                        </a>
+                        @if(isset($categories) && count($categories) > 0)
+                            @foreach($categories as $cat)
+                                <a href="{{ route('products.index', array_merge(request()->except(['category', 'page']), ['category' => $cat->id])) }}" @click="filterOpen = false" class="p-3 rounded-xl border text-center transition-colors {{ request('category') == $cat->id ? 'bg-blue-600 text-white border-blue-600 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100' }}">
+                                    {{ $cat->cate_name }}
+                                </a>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Brands List -->
+                <div class="space-y-3 border-t border-slate-100 pt-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Brands</h4>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-medium">
+                        <a href="{{ route('products.index') }}" @click="filterOpen = false" class="p-3 rounded-xl border text-center transition-colors {{ !request('brand') ? 'bg-slate-800 text-white border-slate-800 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100' }}">
+                            All Brands
+                        </a>
+                        @if(isset($brands) && count($brands) > 0)
+                            @foreach($brands as $brand)
+                                <a href="{{ route('products.index', array_merge(request()->except(['brand', 'page']), ['brand' => $brand->id])) }}" @click="filterOpen = false" class="p-3 rounded-xl border text-center transition-colors {{ request('brand') == $brand->id ? 'bg-slate-800 text-white border-slate-800 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100' }}">
+                                    {{ $brand->brand_name }}
+                                </a>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="pt-4 border-t border-slate-100 flex gap-3">
+                    @if(request()->hasAny(['category', 'brand', 'search']))
+                        <a href="{{ route('products.index') }}" @click="filterOpen = false" class="btn-modern-secondary flex-1 py-3 text-center text-xs">
+                            Reset
+                        </a>
+                    @endif
+                    <button @click="filterOpen = false" type="button" class="btn-modern-primary flex-1 py-3 text-center text-xs cursor-pointer">
+                        Apply & View
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection

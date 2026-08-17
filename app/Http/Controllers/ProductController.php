@@ -26,8 +26,8 @@ class ProductController extends Controller
             $query->where('product_name', 'like', '%' . $request->search . '%');
         }
 
-        // Database-level pagination set to 8 products per page preserving query parameters
-        $products = $query->latest('id')->paginate(6)->withQueryString();
+        // Database-level pagination set with onEachSide(1) windowing for ellipsis formatting
+        $products = $query->latest('id')->paginate(4)->onEachSide(1)->withQueryString();
         $categories = Categories::where('status', 1)->get();
         $brands = Brands::where('status', 1)->get();
 

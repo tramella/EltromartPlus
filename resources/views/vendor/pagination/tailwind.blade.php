@@ -1,8 +1,8 @@
 @if ($paginator->hasPages())
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-center sm:justify-end py-4">
 
-        <!-- Mobile: simple previous/next buttons -->
-        <div class="flex justify-between flex-1 sm:hidden">
+        <!-- Mobile: Simple previous/next controls with current page indicator -->
+        <div class="flex items-center justify-between flex-1 sm:hidden gap-2">
             @if ($paginator->onFirstPage())
                 <span class="px-4 py-2 text-xs font-bold text-slate-400 bg-slate-100 rounded-xl cursor-not-allowed border border-slate-200">
                     {!! __('pagination.previous') !!}
@@ -12,6 +12,10 @@
                     {!! __('pagination.previous') !!}
                 </a>
             @endif
+
+            <span class="text-xs font-extrabold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+                {{ $paginator->currentPage() }} / {{ $paginator->lastPage() }}
+            </span>
 
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" class="btn-modern-secondary text-xs py-2 px-4">
@@ -24,7 +28,7 @@
             @endif
         </div>
 
-        <!-- Desktop: full numbered pagination with Previous / Next -->
+        <!-- Desktop: Numbered pagination with automatic ellipsis (...) windowing for > 4 pages -->
         <div class="hidden sm:flex sm:items-center sm:justify-end">
             <span class="relative z-0 inline-flex items-center gap-1.5 shadow-xs rounded-2xl p-1 bg-white border border-slate-200">
 
@@ -43,33 +47,77 @@
                     </a>
                 @endif
 
-                {{-- Numbered page links with ellipsis separators --}}
-                @foreach ($elements as $element)
-                    {{-- Ellipsis "..." separator --}}
-                    @if (is_string($element))
+                {{-- Render elements or custom ellipsis window when total pages > 4 --}}
+                @if ($paginator->lastPage() > 4)
+                    @php
+                        $currentPage = $paginator->currentPage();
+                        $lastPage = $paginator->lastPage();
+                    @endphp
+
+                    {{-- Always show Page 1 --}}
+                    @if ($currentPage == 1)
+                        <span aria-current="page">
+                            <span class="relative inline-flex items-center px-3.5 py-2 text-xs font-extrabold text-white bg-blue-600 rounded-xl shadow-sm">1</span>
+                        </span>
+                    @else
+                        <a href="{{ $paginator->url(1) }}" class="relative inline-flex items-center px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 hover:text-blue-600 rounded-xl transition-colors">1</a>
+                    @endif
+
+                    {{-- Left Ellipsis "..." --}}
+                    @if ($currentPage > 3)
                         <span aria-disabled="true">
-                            <span class="relative inline-flex items-center px-3 py-2 text-xs font-bold text-slate-400 bg-white rounded-xl select-none">{{ $element }}</span>
+                            <span class="relative inline-flex items-center px-2 py-2 text-xs font-bold text-slate-400 bg-white rounded-xl select-none">...</span>
                         </span>
                     @endif
 
-                    {{-- Array of page number links --}}
-                    @if (is_array($element))
-                        @foreach ($element as $page => $url)
-                            @if ($page == $paginator->currentPage())
-                                <!-- Active / current page indicator -->
-                                <span aria-current="page">
-                                    <span class="relative inline-flex items-center px-3.5 py-2 text-xs font-extrabold text-white bg-blue-600 rounded-xl shadow-sm">{{ $page }}</span>
-                                </span>
-                            @else
-                                <a href="{{ $url }}"
-                                   class="relative inline-flex items-center px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 hover:text-blue-600 rounded-xl transition-colors"
-                                   aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
-                                    {{ $page }}
-                                </a>
-                            @endif
-                        @endforeach
+                    {{-- Middle Pages Window --}}
+                    @for ($i = max(2, $currentPage - 1); $i <= min($lastPage - 1, $currentPage + 1); $i++)
+                        @if ($i == $currentPage)
+                            <span aria-current="page">
+                                <span class="relative inline-flex items-center px-3.5 py-2 text-xs font-extrabold text-white bg-blue-600 rounded-xl shadow-sm">{{ $i }}</span>
+                            </span>
+                        @else
+                            <a href="{{ $paginator->url($i) }}" class="relative inline-flex items-center px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 hover:text-blue-600 rounded-xl transition-colors">{{ $i }}</a>
+                        @endif
+                    @endfor
+
+                    {{-- Right Ellipsis "..." --}}
+                    @if ($currentPage < $lastPage - 2)
+                        <span aria-disabled="true">
+                            <span class="relative inline-flex items-center px-2 py-2 text-xs font-bold text-slate-400 bg-white rounded-xl select-none">...</span>
+                        </span>
                     @endif
-                @endforeach
+
+                    {{-- Always show Last Page --}}
+                    @if ($currentPage == $lastPage)
+                        <span aria-current="page">
+                            <span class="relative inline-flex items-center px-3.5 py-2 text-xs font-extrabold text-white bg-blue-600 rounded-xl shadow-sm">{{ $lastPage }}</span>
+                        </span>
+                    @else
+                        <a href="{{ $paginator->url($lastPage) }}" class="relative inline-flex items-center px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 hover:text-blue-600 rounded-xl transition-colors">{{ $lastPage }}</a>
+                    @endif
+                @else
+                    {{-- Default array elements loop for <= 4 pages --}}
+                    @foreach ($elements as $element)
+                        @if (is_string($element))
+                            <span aria-disabled="true">
+                                <span class="relative inline-flex items-center px-3 py-2 text-xs font-bold text-slate-400 bg-white rounded-xl select-none">{{ $element }}</span>
+                            </span>
+                        @endif
+
+                        @if (is_array($element))
+                            @foreach ($element as $page => $url)
+                                @if ($page == $paginator->currentPage())
+                                    <span aria-current="page">
+                                        <span class="relative inline-flex items-center px-3.5 py-2 text-xs font-extrabold text-white bg-blue-600 rounded-xl shadow-sm">{{ $page }}</span>
+                                    </span>
+                                @else
+                                    <a href="{{ $url }}" class="relative inline-flex items-center px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 hover:text-blue-600 rounded-xl transition-colors">{{ $page }}</a>
+                                @endif
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endif
 
                 {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
