@@ -1,66 +1,142 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EltromartPlus - Technological Equipment E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-<a href="https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1&t=uzkSrSFB6gzIhhlJ-1">My Design for Eltromart</a><br/>
-## About Laravel
+[![Pest Tests](https://github.com/Tramella/EltromartPlus/actions/workflows/tests.yml/badge.svg)](https://github.com/Tramella/EltromartPlus/actions/workflows/tests.yml)
+[![Laravel 11](https://img.shields.io/badge/Laravel-v11.x-FF2D20?logo=laravel)](https://laravel.com)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.x-38BDF8?logo=tailwind-css)](https://tailwindcss.com)
+[![Alpine.js](https://img.shields.io/badge/Alpine.js-v3.x-8BC0D0?logo=alpine.js)](https://alpinejs.dev)
+[![Figma Design](https://img.shields.io/badge/Figma-Design_Board-F24E1E?logo=figma)](https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1&t=uzkSrSFB6gzIhhlJ-1)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+EltromartPlus is a high-performance, modern Laravel 11 e-commerce web application tailored for selling flagship smartphones, laptops, workstations, headsets, power banks, and technological accessories.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🌟 Key Features & Capabilities
 
-## Learning Laravel
+- **Modern Product Catalog**:
+  - Filter by Categories, Brands, and Product Search query strings.
+  - Custom sliding pagination with ellipsis (`...`) formatting for large catalog datasets.
+  - Mobile slide-over filter modal component built with Alpine.js.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Unified Shopping Cart & Wishlist**:
+  - Instant session-backed Cart & Wishlist counters with badge notifications in navigation headers.
+  - Symmetrical quantity steppers (`+` / `-`) for instant cart quantity modifications.
+  - Mobile-optimized responsive cart item layout cards for smartphone displays.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Responsive Mobile First UI**:
+  - Sticky mobile bottom navigation app bar (**Home**, **Catalog**, **Wishlist**, **Cart**, **Profile**).
+  - Integrated mobile search bar input row in header.
+  - Edge-to-edge full-width top announcement bar with zero border radius.
+  - Glassmorphic hero slideshow with LCP optimization.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Enterprise Technical Architecture**:
+  - Eager loading on Eloquent queries to prevent N+1 query overhead.
+  - Pest 3 PHP test suite covering unit, authentication, registration, profile, and verification features.
+  - Production deployment pipeline configured for Railway with automated migrations & database seeders.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Technology Stack
 
-### Premium Partners
+| Layer | Technology |
+| :--- | :--- |
+| **Backend Framework** | Laravel 11 (PHP 8.2+) |
+| **Test Framework** | Pest 3 / PHPUnit |
+| **Frontend Utilities** | Tailwind CSS v3, Alpine.js v3 |
+| **Icons & Fonts** | FontAwesome 6, Plus Jakarta Sans |
+| **Build Pipeline** | Vite 5, Node.js |
+| **Database** | MySQL (Production) / SQLite In-Memory (Test Runs) |
+| **Deployment** | Railway PaaS (Nixpacks & Procfile) |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🚀 Local Installation & Setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Follow these steps to run EltromartPlus locally on your workstation:
 
-## Code of Conduct
+### Prerequisites
+- **PHP** >= 8.2 with PDO & SQLite extensions enabled
+- **Composer** >= 2.x
+- **Node.js** >= 18.x & **npm**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Step 1: Clone Repository & Install Dependencies
+```bash
+git clone https://github.com/Tramella/EltromartPlus.git
+cd EltromartPlus
 
-## Security Vulnerabilities
+# Install PHP composer dependencies
+composer install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Install Frontend JavaScript/CSS packages
+npm install
+```
 
-## License
+### Step 2: Configure Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ensure your `.env` database parameters are set up (e.g. MySQL credentials):
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=eltromart
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### Step 3: Run Database Migrations & Seed Data
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Step 4: Compile Assets & Start Local Server
+```bash
+# Terminal 1: Vite dev server
+npm run dev
+
+# Terminal 2: Laravel development server
+php artisan serve
+```
+
+Access the application in your web browser at `http://127.0.0.1:8000`.
+
+---
+
+## 🧪 Running Automated Test Suite
+
+EltromartPlus uses **Pest 3** for unit and feature testing. Execute the test suite with:
+
+```bash
+./vendor/bin/pest
+```
+
+*Note: Automated tests run using isolated in-memory SQLite configured in [`phpunit.xml`](file:///e:/eltromartplus_project/phpunit.xml).*
+
+---
+
+## 🚢 Deployment (Railway)
+
+EltromartPlus includes pre-configured deployment artifacts for Railway PaaS:
+
+- **[`Procfile`](file:///e:/eltromartplus_project/Procfile)**: Runs database migrations, seeders, and binds `php artisan serve` to `$PORT`.
+- **[`nixpacks.toml`](file:///e:/eltromartplus_project/nixpacks.toml)**: Builds composer autoloaders and compiles production assets with `npm run build`.
+
+When deploying to Railway:
+1. Connect your GitHub repository `Tramella/EltromartPlus`.
+2. Add MySQL database service and link variables (`DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
+3. Set `APP_ENV=production` and `APP_KEY`. Railway will automatically execute builds, run database seeders, and serve traffic over HTTPS.
+
+---
+
+## 🎨 Figma Design Reference
+
+View the original UI/UX design board on [Figma](https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1&t=uzkSrSFB6gzIhhlJ-1).
+
+---
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](LICENSE).
