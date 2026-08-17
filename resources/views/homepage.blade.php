@@ -186,22 +186,22 @@
             <p class="text-slate-500 text-sm">Find top technology equipment across our curated catalog.</p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             @if(isset($categories) && count($categories) > 0)
                 @foreach($categories as $cat)
                     @php
                         $img = $categoryImg[$cat->id] ?? 'mobilephone.png';
                     @endphp
                     <a href="{{ route('products.index', ['category' => $cat->id]) }}"
-                       class="group flex flex-col items-center justify-center gap-3 p-6 rounded-3xl bg-blue-50 ring-1 ring-blue-100 hover:ring-2 hover:ring-blue-300 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-300 aspect-square">
+                       class="group flex flex-col items-center justify-center gap-3 px-4 rounded-3xl bg-blue-50 ring-1 ring-blue-100 hover:ring-2 hover:ring-blue-300 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-300 aspect-square">
 
                         <!-- Category icon with solid colored background for contrast -->
-                        <div class="w-16 h-16 rounded-2xl bg-blue-500 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
                             <img src="{{ asset('images/' . $img) }}"
                                  alt="{{ $cat->cate_name }}"
-                                 width="34" height="34"
+                                 width="24" height="24"
                                  loading="lazy"
-                                 class="w-8 h-8 object-contain"
+                                 class="w-6 h-6 object-contain"
                                  style="filter: brightness(0) invert(1);"
                                  onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
                         </div>
