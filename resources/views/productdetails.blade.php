@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@php
+    $imgName = $product->product_img ?? 'sp1.jpg';
+    $cloudinaryBase = config('services.cloudinary.url', env('CLOUDINARY_IMAGE_URL', 'https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/'));
+    $imgUrl = !empty($cloudinaryBase) ? rtrim($cloudinaryBase, '/') . '/' . ltrim($imgName, '/') : asset('images/' . $imgName);
+@endphp
+
 @section('content')
 <div class="max-w-6xl mx-auto py-6 px-4">
     <!-- Breadcrumb Navigation -->
@@ -13,9 +19,9 @@
 
     <!-- Main Product Details Card -->
     <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-        <!-- Product Image Gallery View -->
-        <div class="relative w-full h-[320px] sm:h-[420px] rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6 overflow-hidden group">
-            <img src="{{ asset('images/productimg_rbg/' . ($product->product_img ?? 'sp1.jpg')) }}" 
+        <!-- Product Image Gallery View with Clean White Background -->
+        <div class="relative w-full h-[320px] sm:h-[420px] rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-6 overflow-hidden group shadow-xs">
+            <img src="{{ $imgUrl }}" 
                  alt="{{ $product->product_name }}"
                  class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" 
                  onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />
@@ -82,7 +88,7 @@
                 </div>
             </div>
 
-            <!-- Action Buttons Group (Add to Cart, Buy Now, Wishlist) -->
+            <!-- Action Buttons Group -->
             <div class="flex flex-col sm:flex-row items-stretch gap-3 pt-2">
                 <!-- Add to Cart Form -->
                 <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
@@ -101,48 +107,15 @@
                     <span>Buy Now</span>
                 </a>
 
-                <!-- Wishlist Button -->
-                <a href="{{ route('wishlist.toggle', ['id' => $product->id]) }}" class="h-12 w-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-rose-500 border border-slate-200 transition-all flex items-center justify-center shrink-0 cursor-pointer" aria-label="Add to wishlist">
-                    <i class="fa-solid fa-heart text-lg"></i>
-                </a>
+                <!-- Wishlist Form -->
+                <form action="{{ route('wishlist.toggle', ['id' => $product->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" aria-label="Add to Wishlist" class="h-12 w-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-rose-500 border border-slate-200 transition-all flex items-center justify-center shrink-0 cursor-pointer">
+                        <i class="fa-solid fa-heart text-lg"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const quantityInput = document.getElementById("quantity-selector");
-        const hiddenQuantityInput = document.getElementById("quantity-input");
-        const minusButton = document.querySelector(".minus");
-        const plusButton = document.querySelector(".plus");
-
-        if (quantityInput && hiddenQuantityInput && minusButton && plusButton) {
-            const maxVal = parseInt(quantityInput.dataset.max) || 99;
-
-            function syncQuantity(val) {
-                let currentVal = parseInt(val);
-                if (isNaN(currentVal) || currentVal < 1) {
-                    currentVal = 1;
-                } else if (currentVal > maxVal) {
-                    currentVal = maxVal;
-                }
-                quantityInput.value = currentVal;
-                hiddenQuantityInput.value = currentVal;
-            }
-
-            quantityInput.addEventListener("change", function() {
-                syncQuantity(this.value);
-            });
-
-            minusButton.addEventListener("click", function() {
-                syncQuantity(parseInt(quantityInput.value) - 1);
-            });
-
-            plusButton.addEventListener("click", function() {
-                syncQuantity(parseInt(quantityInput.value) + 1);
-            });
-        }
-    });
-</script>

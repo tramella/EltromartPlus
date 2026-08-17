@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'cloudinary' => [
+        'url' => env('CLOUDINARY_IMAGE_URL', 'https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/'),
+    ],
+
 ];

@@ -15,7 +15,10 @@
     $materials = is_object($product) ? ($product->materials ?? 'Aluminium Alloy & Glass') : 'Aluminium Alloy';
     $status = is_object($product) ? ($product->status ?? 'In Stock') : 'In Stock';
     $quantityStock = is_object($product) ? ($product->quantity ?? 15) : 15;
-    $imageUrl = asset('images/' . $imageName);
+
+    // Resolve full Cloudinary image URL from environment settings with local asset fallback
+    $cloudinaryBase = config('services.cloudinary.url', env('CLOUDINARY_IMAGE_URL', 'https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/'));
+    $imageUrl = !empty($cloudinaryBase) ? rtrim($cloudinaryBase, '/') . '/' . ltrim($imageName, '/') : asset('images/' . $imageName);
 @endphp
 
 @section('title', $name . ' | EltromartPlus')
@@ -73,8 +76,8 @@
     <!-- Main Product Card Layout -->
     <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         
-        <!-- Left: Gallery Image Preview -->
-        <div class="relative w-full h-[320px] sm:h-[440px] rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6 overflow-hidden group">
+        <!-- Left: Gallery Image Preview with Clean White Background -->
+        <div class="relative w-full h-[320px] sm:h-[440px] rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-6 overflow-hidden group shadow-xs">
             <img src="{{ $imageUrl }}" 
                  alt="{{ $name }}" 
                  fetchpriority="high" 
@@ -169,7 +172,7 @@
                     </div>
                 </div>
 
-                <!-- Buttons Component (Uniform Height h-12, Rounded-2xl, Matched Shadow & Hover effects) -->
+                <!-- Buttons Component -->
                 <div class="flex flex-col sm:flex-row items-stretch gap-3">
                     <form action="{{ route('cart.add', ['id' => $id]) }}" method="POST" class="flex-1">
                         @csrf

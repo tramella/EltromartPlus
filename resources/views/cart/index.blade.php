@@ -46,12 +46,17 @@
                     <!-- Cart Item Rows (Responsive for Mobile & Desktop) -->
                     <div class="divide-y divide-slate-100">
                         @foreach($cart as $id => $item)
+                            @php
+                                $imgItem = $item['image'] ?? 'sp1.jpg';
+                                $cloudinaryBase = config('services.cloudinary.url', env('CLOUDINARY_IMAGE_URL', 'https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/'));
+                                $itemImgUrl = !empty($cloudinaryBase) ? rtrim($cloudinaryBase, '/') . '/' . ltrim($imgItem, '/') : asset('images/' . $imgItem);
+                            @endphp
                             <div class="py-4 flex flex-col sm:grid sm:grid-cols-12 gap-4 items-center">
                                 
                                 <!-- Product Thumbnail & Meta Details -->
                                 <div class="w-full sm:col-span-6 flex items-center gap-3 sm:gap-4">
-                                    <div class="w-16 h-16 rounded-xl bg-slate-50 border border-slate-100 p-2 shrink-0 flex items-center justify-center">
-                                        <img src="{{ asset('images/' . ($item['image'] ?? 'sp1.jpg')) }}" 
+                                    <div class="w-16 h-16 rounded-xl bg-white border border-slate-100 p-2 shrink-0 flex items-center justify-center">
+                                        <img src="{{ $itemImgUrl }}" 
                                              alt="{{ $item['name'] }}" 
                                              class="max-h-full max-w-full object-contain" 
                                              onError="this.onerror=null;this.src='{{ asset('images/sp1.jpg') }}';" />

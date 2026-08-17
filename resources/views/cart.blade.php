@@ -7,7 +7,7 @@
 @section('content')
     <div class="w-full p-5 flex flex-col justify-center items-center">
         <div class="title-cart my-5 font-bold text-2xl text-slate-800">Your Cart</div>
-        
+
         @if (isset($message) && $message)
             <div class="w-full flex flex-col justify-center items-center">
                 <div class="w-message-cart">

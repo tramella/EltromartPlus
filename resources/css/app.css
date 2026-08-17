@@ -3,9 +3,52 @@
 @tailwind utilities;
 
 @layer base {
+    html {
+        scroll-behavior: smooth;
+    }
     body {
         @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-500 selection:text-white;
     }
+}
+
+/* Page Loading Bar Animation */
+.page-loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1, #3b82f6);
+    z-index: 9999;
+    width: 0%;
+    transition: width 0.4s ease, opacity 0.4s ease;
+}
+
+.page-loading-bar.active {
+    width: 70%;
+    animation: pulseLoading 1.5s infinite ease-in-out;
+}
+
+.page-loading-bar.complete {
+    width: 100%;
+    opacity: 0;
+}
+
+@keyframes pulseLoading {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Skeleton Shimmer Loading */
+.skeleton-shimmer {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 /* Header & Navbar Styling */
@@ -48,29 +91,28 @@
 }
 
 .product-image-wrapper {
-    @apply relative w-full h-56 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center p-4 mb-4;
+    @apply relative w-full h-56 rounded-xl overflow-hidden bg-white flex items-center justify-center p-4 mb-4;
 }
 
 .product-image-wrapper img {
     @apply max-h-full max-w-full object-contain transition-transform duration-500;
 }
 
-
 /* Button System */
 .btn-modern-primary {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md hover:shadow-blue-500/25 transition-all duration-200 cursor-pointer disabled:opacity-50;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md hover:shadow-blue-500/25 transition-all duration-200 cursor-pointer disabled:opacity-50 active:scale-95;
 }
 
 .btn-modern-secondary {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200 transition-all duration-200 cursor-pointer;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200 transition-all duration-200 cursor-pointer active:scale-95;
 }
 
 .btn-modern-outline {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-blue-600 bg-white hover:bg-blue-50 border-2 border-blue-600 transition-all duration-200 cursor-pointer;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-blue-600 bg-white hover:bg-blue-50 border-2 border-blue-600 transition-all duration-200 cursor-pointer active:scale-95;
 }
 
 .btn-modern-dark {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-md transition-all duration-200 cursor-pointer;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-md transition-all duration-200 cursor-pointer active:scale-95;
 }
 
 /* Badge Count */
@@ -82,7 +124,6 @@
 .input-modern {
     @apply w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm placeholder:text-slate-400;
 }
-
 
 .item-sort{
     width: 170px;
