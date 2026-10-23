@@ -1,91 +1,124 @@
-# EltromartPlus - Technological Equipment E-Commerce Platform
+# EltromartPlus — Technology E-Commerce Platform
 
-[![Pest Tests](https://github.com/Tramella/EltromartPlus/actions/workflows/tests.yml/badge.svg)](https://github.com/Tramella/EltromartPlus/actions/workflows/tests.yml)
-[![Laravel 11](https://img.shields.io/badge/Laravel-v11.x-FF2D20?logo=laravel)](https://laravel.com)
-[![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php)](https://php.net)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.x-38BDF8?logo=tailwind-css)](https://tailwindcss.com)
-[![Alpine.js](https://img.shields.io/badge/Alpine.js-v3.x-8BC0D0?logo=alpine.js)](https://alpinejs.dev)
-[![Cloudinary CDN](https://img.shields.io/badge/Cloudinary-CDN_Images-3448C5?logo=cloudinary)](https://cloudinary.com)
-[![Figma Design](https://img.shields.io/badge/Figma-Design_Board-F24E1E?logo=figma)](https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1&t=uzkSrSFB6gzIhhlJ-1)
+A modern, responsive e-commerce web application built with Laravel 11, designed for browsing and shopping for smartphones, laptops, workstations, headsets, power banks, and technology accessories.
 
-EltromartPlus is a high-performance, modern Laravel 11 e-commerce web application tailored for selling flagship smartphones, laptops, workstations, headsets, power banks, and technological accessories.
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php&logoColor=white)](https://www.php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?logo=alpinedotjs&logoColor=white)](https://alpinejs.dev)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)](https://vite.dev)
+[![Pest](https://img.shields.io/badge/Testing-Pest_3-6366F1)](https://pestphp.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
----
+## Overview
 
-## 🌟 Key Features & Capabilities
+EltromartPlus is a Laravel-based e-commerce project focused on delivering a clean shopping experience across desktop and mobile devices. It combines a responsive product catalog, session-based shopping features, optimized product imagery, and a modern frontend powered by Tailwind CSS and Alpine.js.
 
-- **Cloudinary CDN Image Hosting**:
-  - High-resolution product images served over Cloudinary CDN via `CLOUDINARY_IMAGE_URL` environment configuration with local fallback.
-  - Transparent background support (`productimg_rbg`) rendered cleanly on pure white product card containers.
+## Features
 
-- **Modern Product Catalog**:
-  - Filter by Categories, Brands, and Product Search query strings.
-  - Custom sliding pagination with ellipsis (`...`) formatting for large catalog datasets.
-  - Mobile slide-over filter modal component built with Alpine.js.
+### Product Catalog
+- Browse technology products by category and brand.
+- Search products using query parameters.
+- Navigate large product catalogs with custom pagination and ellipsis.
+- Filter products using a mobile-friendly slide-over interface.
 
-- **Unified Shopping Cart & Wishlist**:
-  - Instant session-backed Cart & Wishlist counters with badge notifications in navigation headers.
-  - Symmetrical quantity steppers (`+` / `-`) for instant cart quantity modifications.
-  - Mobile-optimized responsive cart item layout cards for smartphone displays.
+### Shopping Cart & Wishlist
+- Session-backed shopping cart and wishlist.
+- Navigation badges displaying cart and wishlist counts.
+- Quantity controls for adjusting cart items.
+- Responsive cart layouts optimized for mobile screens.
 
-- **Responsive Mobile First UI & Micro-Interactions**:
-  - Smooth page progress loading bar on link navigation & form submission.
-  - Sticky mobile bottom navigation app bar (**Home**, **Catalog**, **Wishlist**, **Cart**, **Profile**).
-  - Integrated mobile search bar input row in header.
-  - Edge-to-edge full-width top announcement bar with zero border radius.
-  - Glassmorphic hero slideshow with LCP optimization.
+### Responsive UI & Interactions
+- Mobile-first layouts for different screen sizes.
+- Sticky mobile navigation for Home, Catalog, Wishlist, Cart, and Profile.
+- Integrated mobile search in the header.
+- Page progress indicator for navigation and form submissions.
+- Hero slideshow with glassmorphism styling and loading optimizations.
 
-- **Enterprise Technical Architecture**:
-  - Eager loading on Eloquent queries to prevent N+1 query overhead.
-  - Pest 3 PHP test suite covering unit, authentication, registration, profile, and verification features.
-  - Production deployment pipeline configured for Railway with automated migrations & database seeders.
+### Product Images & Performance
+- Cloudinary-hosted product images through the `CLOUDINARY_IMAGE_URL` environment variable.
+- Local fallback support for product images.
+- White product-card backgrounds for clean presentation of transparent product images.
+- Eloquent eager loading to help reduce N+1 database queries.
 
----
+### Testing
+- Pest 3 test suite.
+- Tests covering unit functionality, authentication, registration, profiles, and verification.
+- SQLite in-memory database configuration for isolated test runs.
 
-## 🛠️ Technology Stack
+## Tech Stack
 
 | Layer | Technology |
-| :--- | :--- |
-| **Backend Framework** | Laravel 11 (PHP 8.2+) |
-| **Test Framework** | Pest 3 / PHPUnit |
-| **Media Hosting / CDN** | Cloudinary CDN (`CLOUDINARY_IMAGE_URL`) |
-| **Frontend Utilities** | Tailwind CSS v3, Alpine.js v3 |
-| **Icons & Fonts** | FontAwesome 6, Plus Jakarta Sans |
-| **Build Pipeline** | Vite 5, Node.js |
-| **Database** | MySQL (Production) / SQLite In-Memory (Test Runs) |
-| **Deployment** | Railway PaaS (Nixpacks & Procfile) |
+|---|---|
+| Backend | Laravel 11 |
+| Language | PHP 8.2+ |
+| Database | MySQL |
+| Testing | Pest 3 / PHPUnit |
+| Frontend | Blade, Tailwind CSS 3, Alpine.js 3 |
+| Build Tool | Vite 5 |
+| Images | Cloudinary |
+| Icons & Typography | Font Awesome 6, Plus Jakarta Sans |
+| Design | Figma |
+| Deployment | Render with Docker |
+| Database Hosting | Aiven MySQL |
 
----
+## UI/UX Design
 
-## 🚀 Local Installation & Setup
+Explore the original design board:
 
-Follow these steps to run EltromartPlus locally on your workstation:
+**[View EltromartPlus on Figma](https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1)**
+
+## Getting Started
 
 ### Prerequisites
-- **PHP** >= 8.2 with PDO & SQLite extensions enabled
-- **Composer** >= 2.x
-- **Node.js** >= 18.x & **npm**
 
-### Step 1: Clone Repository & Install Dependencies
+Make sure the following tools are installed:
+
+- PHP 8.2 or later
+- Composer 2.x
+- Node.js 18 or later
+- npm
+- MySQL, or another database configured for Laravel
+
+PHP extensions required by your environment should include the appropriate PDO database driver.
+
+### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/Tramella/EltromartPlus.git
 cd EltromartPlus
+```
 
-# Install PHP composer dependencies
+### 2. Install Dependencies
+
+```bash
 composer install
-
-# Install Frontend JavaScript/CSS packages
 npm install
 ```
 
-### Step 2: Configure Environment
+### 3. Configure Environment Variables
+
+Create your local environment file:
+
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Ensure your `.env` parameters are set up (including Cloudinary image base URL):
+On Windows PowerShell, use:
+
+```powershell
+Copy-Item .env.example .env
+php artisan key:generate
+```
+
+Configure your local `.env` file with the appropriate database and image settings:
+
 ```env
+APP_NAME=EltromartPlus
+APP_ENV=local
+APP_DEBUG=true
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -96,60 +129,123 @@ DB_PASSWORD=
 CLOUDINARY_IMAGE_URL=https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/
 ```
 
-### Step 3: Run Database Migrations & Seed Data
+Replace the database values with your actual local configuration. Keep credentials and other secrets in environment variables; never commit your real `.env` file.
+
+### 4. Run Database Migrations
+
+To create the database tables:
+
+```bash
+php artisan migrate
+```
+
+To reset the local database and seed sample data, if your seeders are configured for this purpose:
+
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-### Step 4: Compile Assets & Start Local Server
-```bash
-# Terminal 1: Vite dev server
-npm run dev
+**Warning:** `migrate:fresh` drops all existing tables. Use it only when resetting a local or disposable database.
 
-# Terminal 2: Laravel development server
+### 5. Build Frontend Assets
+
+For development with hot reload:
+
+```bash
+npm run dev
+```
+
+In a separate terminal, start Laravel:
+
+```bash
 php artisan serve
 ```
 
-Access the application in your web browser at `http://127.0.0.1:8000`.
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
----
+To build production assets instead:
 
-## 🧪 Running Automated Test Suite
+```bash
+npm run build
+```
 
-EltromartPlus uses **Pest 3** for unit and feature testing. Execute the test suite with:
+## Running Tests
+
+Run the automated test suite with Pest:
 
 ```bash
 ./vendor/bin/pest
 ```
 
-*Note: Automated tests run using isolated in-memory SQLite configured in [`phpunit.xml`](file:///e:/eltromartplus_project/phpunit.xml).*
+On Windows:
 
----
+```powershell
+.\vendor\bin\pest
+```
 
-## 🚢 Deployment (Railway)
+The project is configured to use an isolated in-memory SQLite database for tests through `phpunit.xml`. Ensure the required SQLite PHP extension is enabled.
 
-EltromartPlus includes pre-configured deployment artifacts for Railway PaaS:
+## Deployment
 
-- **[`Procfile`](file:///e:/eltromartplus_project/Procfile)**: Runs database migrations, seeders, and binds `php artisan serve` to `$PORT`.
-- **[`nixpacks.toml`](file:///e:/eltromartplus_project/nixpacks.toml)**: Builds composer autoloaders and compiles production assets with `npm run build`.
+The application is configured for Docker-based deployment on Render, with Aiven MySQL as the production database.
 
-When deploying to Railway:
-1. Connect your GitHub repository `Tramella/EltromartPlus`.
-2. Add MySQL database service and link variables (`DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
-3. Set environment variables:
-   - `APP_ENV=production`
-   - `APP_KEY`
-   - `CLOUDINARY_IMAGE_URL=https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/`
-4. Railway will automatically execute builds, run database seeders, and serve traffic over HTTPS.
+### Render Configuration
 
----
+1. Connect the `Tramella/EltromartPlus` GitHub repository to a Render Web Service.
+2. Configure the service to build using the repository's `Dockerfile`.
+3. Add the required production environment variables in the Render dashboard.
 
-## 🎨 Figma Design Reference
+At minimum, configure the following variables with your actual production values:
 
-View the original UI/UX design board on [Figma](https://www.figma.com/design/ENZCfSOjGzmMYdH9dOSRDk/Eltromart%2B?node-id=0-1&t=uzkSrSFB6gzIhhlJ-1).
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=<your-existing-generated-app-key>
 
----
+DB_CONNECTION=mysql
+DB_HOST=<your-aiven-mysql-host>
+DB_PORT=<your-aiven-mysql-port>
+DB_DATABASE=<your-aiven-database-name>
+DB_USERNAME=<your-aiven-username>
+DB_PASSWORD=<your-aiven-password>
 
-## 📄 License
+MYSQL_ATTR_SSL_CA=/var/www/html/storage/certs/ca.pem
+SESSION_DRIVER=file
 
-This project is open-sourced software licensed under the [MIT license](LICENSE).
+CLOUDINARY_IMAGE_URL=https://res.cloudinary.com/dalrsrbw0/image/upload/v1786957890/
+```
+
+**Deployment notes:**
+- Use the actual connection details provided by Aiven.
+- Keep the Aiven CA certificate at `storage/certs/ca.pem` and ensure it is included in the Docker image.
+- Configure `config/database.php` to read `MYSQL_ATTR_SSL_CA`.
+- Keep `APP_DEBUG=false` in production.
+- Preserve your existing `APP_KEY` when redeploying an established application.
+- Ensure the database exists and the configured database user has the necessary permissions.
+- Run migrations against the intended production database before serving traffic.
+
+Never commit production credentials, private keys, or your real `.env` file to source control.
+
+## Project Structure
+
+The application follows Laravel's conventional project organization:
+
+```text
+EltromartPlus/
+├── app/             # Application logic
+├── config/          # Application configuration
+├── database/        # Migrations, factories, and seeders
+├── public/          # Public entry point and static assets
+├── resources/       # Blade views and frontend source files
+├── routes/          # Application routes
+├── storage/         # Logs, cache, and application storage
+├── tests/           # Automated tests
+├── Dockerfile       # Container build configuration
+├── composer.json    # PHP dependencies
+├── package.json     # Frontend dependencies
+└── vite.config.js   # Vite configuration
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
