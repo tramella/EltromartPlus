@@ -25,15 +25,16 @@ COPY . .
 COPY --from=frontend /app/public/build ./public/build
 
 # Ensure the Aiven MySQL SSL CA certificate exists
-RUN test -f /var/www/html/storage/certs/ca.pem
-    || (echo "ERROR: MySQL SSL CA certificate not found at storage/certs/ca.pem" && exit 1)
+RUN test -f /var/www/html/storage/certs/ca.pem || (echo "ERROR: MySQL SSL CA certificate not found at storage/certs/ca.pem" && exit 1)
 
 # Install production PHP dependencies
-RUN composer install
-    --no-dev
-    --no-interaction
-    --prefer-dist
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
     --optimize-autoloader
+
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public
