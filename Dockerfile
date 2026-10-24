@@ -16,6 +16,7 @@ RUN npm run build
 
 # Laravel application
 FROM richarvey/nginx-php-fpm:3.1.6
+RUN nginx -T 2>&1 | grep -E 'listen |server_name'
 
 WORKDIR /var/www/html
 
